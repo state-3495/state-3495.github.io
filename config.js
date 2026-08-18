@@ -5,32 +5,57 @@ const CONFIG = {
     "tagline": "VERIFIED WINNER STATE",
     "birthDate": "2025-09-26",
     "svsRecord": "0-0",
-    "leadingStateWins": "-",
-    "napLevel": "NAP4",
-    "ranking": "-"
+    "leadingStateWins": "4",
+    "napLevel": "NAP3"
   },
   "transfer": {
-    "isOpen": true,
+    "isOpen": "",
     "groupNumber": "14",
-    "eligibleStatesStart": "-",
-    "eligibleStatesEnd": "-",
-    "periodStart": "-",
-    "periodEnd": "-",
-    "spotsLeft": "-",
-    "spotsTotal": "-",
-    "powerCap": "400M"
+    "eligibleStatesStart": "3385",
+    "eligibleStatesEnd": "3571",
+    "periodStart": "2026/08/16",
+    "periodEnd": "2026/08/22",
+    "spotsLeft": "30",
+    "spotsTotal": "30",
+    "powerCap": ""
   },
-  "alliances": [
+  "governance": {
+    "peaceLevelPercentage": "90",
+    "napCoverageValue": "3/3 top alliances",
+    "napCoverageDescription": " All top alliances have signed NAP.",
+    "kePolicyValue": "Warn once, then kick",
+    "kePolicyDescription": "KE offenders get one warning before removal."
+  },
+  "rules": [
     {
-      "name": "ICE",
-      "ranking": "2",
-      "power": "25B",
-      "description": "-"
+      "rule": "No KE without a declared war."
     },
+    {
+      "rule": "No spying between NAP alliances."
+    },
+    {
+      "rule": "Respect the transfer window: no bullying incoming players."
+    }
+  ],
+  "council": [
+    {
+      "member": "PlayerOne - President, ICE"
+    },
+    {
+      "member": "PlayerTwo - Chief of Staff, ICE"
+    }
+  ],
+  "alliances": [
     {
       "name": "CRY",
       "ranking": "1",
       "power": "22B",
+      "description": "-"
+    },
+    {
+      "name": "ICE",
+      "ranking": "2",
+      "power": "25B",
       "description": "-"
     },
     {
@@ -42,11 +67,13 @@ const CONFIG = {
   ],
   "players": [
     {
+      "alliance": "ICE",
       "name": "PlayerOne",
       "role": "President",
       "power": "1.2B"
     },
     {
+      "alliance": "CRY",
       "name": "PlayerTwo",
       "role": "Chief of Staff",
       "power": "1.1B"
@@ -54,19 +81,22 @@ const CONFIG = {
   ],
   "events": [
     {
+      "alliance": "ICE",
       "event": "Bear Trap",
-      "time": "14:00",
-      "duration": "2:00"
+      "time 1": "14:00",
+      "time 2": "2:00"
     },
     {
+      "alliance": "ICE",
       "event": "Crazy Joe",
-      "time": "20:00",
-      "duration": "1:00"
+      "time 1": "20:00",
+      "time 2": "1:00"
     },
     {
+      "alliance": "ICE",
       "event": "Foundry Canyon",
-      "time": "10:00",
-      "duration": "3:00"
+      "time 1": "10:00",
+      "time 2": "3:00"
     }
   ],
   "timeline": [
@@ -98,7 +128,7 @@ const CONFIG = {
   ],
   "updates": [
     {
-      "date": "2026-08-16",
+      "date": "2025-09-26",
       "time": "12:00",
       "title": "Grand Opening",
       "message": "State 3500 is now open."
