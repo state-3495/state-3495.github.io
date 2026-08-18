@@ -10,19 +10,38 @@ workflow pulls the sheet on a schedule and regenerates `config.js`.
 Google Sheet (Anyone with the link: Viewer) --> scripts/sync-sheet.js --> config.js --> GitHub Pages
 ```
 
-No backend server runs anywhere. The sync script fetches the sheet as CSV
-(no API key needed) inside GitHub Actions (free for public repos), commits
-the regenerated `config.js`, and that push triggers a normal Pages rebuild.
+No backend server runs anywhere. The sync script reads the sheet through the
+official Sheets API v4 (with a read-only API key, inside GitHub Actions,
+free for public repos), commits the regenerated `config.js`, and that push
+triggers a normal Pages rebuild.
 
 Sheet: https://docs.google.com/spreadsheets/d/1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk/edit
 
 ## 1. Sheet sharing
 
-Share the Google Sheet as **"Anyone with the link: Viewer"**. This lets the
-sync script read it as CSV without any credentials. Do not put anything
+Share the Google Sheet as **"Anyone with the link: Viewer"**. The API key
+below only works for publicly-readable sheets. Do not put anything
 sensitive in this sheet: it's effectively public.
 
-## 2. Sheet structure
+## 2. API key setup (one-time)
+
+We previously scraped the sheet as CSV via a public export URL, but that
+endpoint has its own server-side cache (edits could take a few minutes to
+show up). The Sheets API v4 has no such cache, so edits are reflected
+immediately.
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create
+   (or reuse) a project.
+2. Enable the **Google Sheets API** for that project (APIs & Services >
+   Library).
+3. Go to APIs & Services > Credentials > Create Credentials > API key.
+4. Restrict the key: API restrictions > Google Sheets API only. (This key
+   only grants read access to public sheets, but restricting it limits how
+   it could be reused if it ever leaked.)
+5. In the GitHub repo, go to Settings > Secrets and variables > Actions, and
+   add a new secret named `GOOGLE_SHEETS_API_KEY` with the key value.
+
+## 3. Sheet structure
 
 The sheet needs exactly 8 tabs.
 
@@ -112,7 +131,7 @@ else stays a string. Adding a row to `alliances`/`events`/`rules`/`council`/
 `updates` adds a line on the site; adding a column to `alliances`/`events`
 renders automatically without any code change.
 
-## 3. Running the sync
+## 4. Running the sync
 
 - **Automatic**: the workflow in `.github/workflows/sync-sheet.yml` runs
   every 10 minutes and pushes `config.js` if the sheet changed.
@@ -120,17 +139,17 @@ renders automatically without any code change.
   ("Sync Google Sheet" > Run workflow), or run it locally:
 
   ```bash
-  npm run sync
+  GOOGLE_SHEETS_API_KEY="..." npm run sync
   ```
 
-## 4. Local development
+## 5. Local development
 
 ```bash
 npm test           # runs the parser self-check (no network needed)
 python3 -m http.server 8000   # serve index.html + config.js locally
 ```
 
-## 5. GitHub Pages
+## 6. GitHub Pages
 
 This repo is named `state-3500.github.io`, so GitHub Pages serves it
 automatically at https://state-3500.github.io/ with no Settings > Pages

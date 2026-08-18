@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 20
       - run: node scripts/sync-sheet.js
+        env:
+          GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

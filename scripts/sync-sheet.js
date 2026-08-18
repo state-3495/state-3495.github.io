@@ -1,35 +1,10 @@
-// Pulls data from the public Google Sheet and regenerates config.js.
-// Sheet must be shared as "Anyone with the link: Viewer".
+// Pulls data from the Google Sheet via the Sheets API v4 (with a public,
+// read-only API key) and regenerates config.js. The sheet must still be
+// shared as "Anyone with the link: Viewer" for the key-based read to work.
+// Requires env var GOOGLE_SHEETS_API_KEY. See README.md for setup.
 const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
 const KV_TABS = ["info", "transfer", "governance"];
 const LIST_TABS = ["rules", "council", "alliances", "events", "timeline", "updates"];
-
-export function parseCsv(text) {
-  const rows = [];
-  let row = [], cell = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (inQuotes) {
-      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else { cell += c; }
-    } else if (c === '"') {
-      inQuotes = true;
-    } else if (c === ',') {
-      row.push(cell); cell = "";
-    } else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++;
-      row.push(cell); cell = "";
-      if (row.some((v) => v !== "")) rows.push(row);
-      row = [];
-    } else {
-      cell += c;
-    }
-  }
-  row.push(cell);
-  if (row.some((v) => v !== "")) rows.push(row);
-  return rows;
-}
 
 export function toKeyValue(rows) {
   const out = {};
@@ -45,39 +20,31 @@ export function toList(rows) {
   return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
 }
 
-// Google's gviz CSV endpoint has a footgun: if `sheet=<name>` doesn't match
-// any tab, it silently returns the FIRST tab's data instead of erroring.
-// We fetch the sentinel tab's raw text once and treat any other tab whose
-// raw text matches it byte-for-byte as "not found" (Google fell back to it).
-const SENTINEL_TAB = "info";
-
-async function fetchRawCsv(name) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+async function fetchAllTabs(apiKey, names) {
+  const params = names.map((n) => `ranges=${encodeURIComponent(n)}`).join("&");
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet?${params}&key=${apiKey}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch tab "${name}": ${res.status}`);
-  const text = await res.text();
-  if (text.trimStart().startsWith("<")) {
-    throw new Error(`Tab "${name}" returned HTML, not CSV. Make sure the sheet is shared as "Anyone with the link: Viewer".`);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Sheets API request failed: ${res.status} ${body}`);
   }
-  return text;
+  const { valueRanges } = await res.json();
+  return valueRanges.map((r) => r.values || []);
 }
 
 async function main() {
-  const sentinelText = await fetchRawCsv(SENTINEL_TAB);
-  const otherNames = [...KV_TABS, ...LIST_TABS].filter((name) => name !== SENTINEL_TAB);
+  const apiKey = process.env.GOOGLE_SHEETS_API_KEY;
+  if (!apiKey) {
+    throw new Error("GOOGLE_SHEETS_API_KEY env var is not set. See README.md for setup.");
+  }
 
-  const rawByName = { [SENTINEL_TAB]: sentinelText };
-  await Promise.all(otherNames.map(async (name) => {
-    const text = await fetchRawCsv(name);
-    if (text === sentinelText) {
-      throw new Error(`Tab "${name}" not found in the sheet (Google silently returned the "${SENTINEL_TAB}" tab instead). Add a tab named "${name}".`);
-    }
-    rawByName[name] = text;
-  }));
+  const names = [...KV_TABS, ...LIST_TABS];
+  const rows = await fetchAllTabs(apiKey, names);
+  const rowsByName = Object.fromEntries(names.map((name, i) => [name, rows[i]]));
 
   const config = {};
-  KV_TABS.forEach((name) => { config[name] = toKeyValue(parseCsv(rawByName[name])); });
-  LIST_TABS.forEach((name) => { config[name] = toList(parseCsv(rawByName[name])); });
+  KV_TABS.forEach((name) => { config[name] = toKeyValue(rowsByName[name]); });
+  LIST_TABS.forEach((name) => { config[name] = toList(rowsByName[name]); });
 
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
