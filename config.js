@@ -110,21 +110,24 @@ const CONFIG = {
   ],
   "alliances": [
     {
-      "name": "[CRY] CryBabies",
+      "tag": "CRY",
+      "name": "CryBabies",
       "ranking": "1",
       "power": "22B",
       "description": "sample1",
       "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "name": "[ICE] IcebornSquirrel",
+      "tag": "ICE",
+      "name": "IcebornSquirrel",
       "ranking": "2",
       "power": "25B",
       "description": "A friendly, active alliance.\nWe fight together and grow together.\nJoin us for daily events and fun.",
       "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "name": "[KOR] HappyNewYear",
+      "tag": "KOR",
+      "name": "HappyNewYear",
       "ranking": "3",
       "power": "21B",
       "description": "sample3",

@@ -99,13 +99,17 @@ clickable icon that opens a copy-to-clipboard popup instead of plain text)
 |---|---|---|---|---|
 | PlayerOne | President | ICE | 1.2B | PlayerOne#1234 |
 
-**Tab `alliances`** (one row per alliance)
+**Tab `alliances`** (one row per alliance; `tag` is the short in-game alliance
+tag used to match rows in `players`/`events`/`council`, `name` is the full
+display name shown on the site as `[tag] name`)
 
-| name | ranking | power | description | recruiting |
-|---|---|---|---|---|
-| ICE | 1 | 50M | Main alliance, NAP6 verified | Active 500K+ power players |
+| tag | name | ranking | power | description | recruiting |
+|---|---|---|---|---|---|
+| ICE | IcebornSquirrel | 1 | 50M | Main alliance, NAP6 verified | Active 500K+ power players |
 
 `recruiting` renders as a "Looking for: ..." callout under the description.
+Make sure the `alliance` column in `players`/`events`/`council` matches
+the `tag` value here exactly (not the display name).
 
 **Tab `events`** (recurring daily events, grouped by alliance on the site;
 `time1`/`time2` are two daily run times)

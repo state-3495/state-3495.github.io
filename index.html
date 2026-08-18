@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>State 3500 | Whiteout Survival</title>
-<script src="config.js?v=52709a3e" defer></script>
+<script src="config.js?v=5a866dde" defer></script>
 <style>
   :root{
     --bg-0:#060b18; --bg-1:#0b1530; --bg-2:#0f1f45;
@@ -395,14 +395,14 @@ function rankBadge(ranking) {
 function renderAlliances(alliances, council, events) {
   if (!alliances || !alliances.length) return '<p class="empty">No data yet.</p>';
   return alliances.map((a) => {
-    const own = (rows) => (rows || []).filter((r) => r.alliance === a.name).map(({ alliance, ...rest }) => rest);
+    const own = (rows) => (rows || []).filter((r) => r.alliance === a.tag).map(({ alliance, ...rest }) => rest);
     const alliancePlayers = own(council);
     const allianceEvents = own(events);
     return `
       <div class="alliance-card">
         <div class="alliance-head">
           ${rankBadge(a.ranking)}
-          <span class="alliance-name">${a.name}</span>
+          <span class="alliance-name">${a.tag ? `[${a.tag}] ` : ''}${a.name}</span>
           <span class="alliance-power">${a.power}</span>
         </div>
         ${a.description && a.description !== '-' ? `<div class="alliance-desc">${a.description}</div>` : ''}
