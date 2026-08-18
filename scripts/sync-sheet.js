@@ -1,10 +1,11 @@
-// Pulls data from the Google Sheet via the Sheets API v4 (with a public,
-// read-only API key) and regenerates config.js. The sheet must still be
-// shared as "Anyone with the link: Viewer" for the key-based read to work.
-// Requires env var GOOGLE_SHEETS_API_KEY. See README.md for setup.
-const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
+// Pulls data from a private Google Sheet (via a Service Account) and
+// regenerates config.js. The sheet is NOT publicly shared: it's only
+// shared with the service account's email as Viewer.
+// Requires env vars GOOGLE_SHEET_ID and GCP_SA_KEY. See README.md for setup.
+import { GoogleAuth } from "google-auth-library";
+
 const KV_TABS = ["info", "transfer", "governance"];
-const LIST_TABS = ["rules", "council", "alliances", "events", "timeline", "updates"];
+const LIST_TABS = ["rules", "council", "alliances", "events", "svs", "timeline", "updates"];
 
 export function toKeyValue(rows) {
   const out = {};
@@ -20,26 +21,30 @@ export function toList(rows) {
   return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
 }
 
-async function fetchAllTabs(apiKey, names) {
+async function fetchAllTabs(sheetId, names) {
+  const auth = new GoogleAuth({
+    credentials: JSON.parse(process.env.GCP_SA_KEY),
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+  });
+  const client = await auth.getClient();
+
   const params = names.map((n) => `ranges=${encodeURIComponent(n)}`).join("&");
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet?${params}&key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Sheets API request failed: ${res.status} ${body}`);
-  }
-  const { valueRanges } = await res.json();
-  return valueRanges.map((r) => r.values || []);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${params}`;
+  const res = await client.request({ url });
+  return res.data.valueRanges.map((r) => r.values || []);
 }
 
 async function main() {
-  const apiKey = process.env.GOOGLE_SHEETS_API_KEY;
-  if (!apiKey) {
-    throw new Error("GOOGLE_SHEETS_API_KEY env var is not set. See README.md for setup.");
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!sheetId) {
+    throw new Error("GOOGLE_SHEET_ID env var is not set. See README.md for setup.");
+  }
+  if (!process.env.GCP_SA_KEY) {
+    throw new Error("GCP_SA_KEY env var is not set. See README.md for setup.");
   }
 
   const names = [...KV_TABS, ...LIST_TABS];
-  const rows = await fetchAllTabs(apiKey, names);
+  const rows = await fetchAllTabs(sheetId, names);
   const rowsByName = Object.fromEntries(names.map((name, i) => [name, rows[i]]));
 
   const config = {};

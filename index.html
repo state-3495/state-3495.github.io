@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>State 3500 | Whiteout Survival</title>
-<script src="config.js?v=3df5600c" defer></script>
+<script src="config.js?v=52709a3e" defer></script>
 <style>
   :root{
     --bg-0:#060b18; --bg-1:#0b1530; --bg-2:#0f1f45;
@@ -146,7 +146,11 @@
   }
   .alliance-card:last-child{margin-bottom:0}
   .alliance-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-  .alliance-name{font-size:17px;font-weight:800;color:var(--cyan)}
+  .alliance-name{
+    font-size:21px;font-weight:900;letter-spacing:0.02em;
+    background:linear-gradient(135deg,#fff 10%,var(--gold) 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
   .alliance-power{
     margin-left:auto;display:inline-flex;align-items:center;justify-content:center;
     min-width:56px;height:32px;padding:0 14px;flex-shrink:0;border-radius:999px;
@@ -157,17 +161,21 @@
     font-size:14px;line-height:1.6;color:var(--ink);font-weight:500;
     margin:10px 0 14px;white-space:pre-line;
   }
+  .alliance-sub{
+    background:rgba(255,255,255,0.025);border:1px solid var(--card-border);
+    border-radius:12px;padding:12px;margin-top:12px;
+  }
+  .alliance-sub:first-of-type{margin-top:0}
+  .alliance-sub h4{
+    font-size:13px;font-weight:800;letter-spacing:0.04em;color:var(--cyan);
+    margin-bottom:8px;
+  }
+  .note{color:var(--ink-dim);font-style:italic}
   .recruiting{
     font-size:12.5px; padding:8px 12px; margin-bottom:12px; border-radius:10px;
     background:rgba(255,215,106,0.07); border-left:3px solid var(--gold); color:var(--ink);
   }
   .recruiting b{color:var(--gold)}
-  .alliance-sub h4{
-    font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-dim);
-    margin:12px 0 6px;
-  }
-  .alliance-sub:first-of-type h4{margin-top:0}
-  .note{color:var(--ink-dim);font-style:italic}
 
   .player-list{display:flex;flex-direction:column}
   .player-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
@@ -210,6 +218,22 @@
     font-weight:800;font-size:13px;letter-spacing:0.03em;transition:opacity 0.15s;
   }
   .discord-copy-btn:hover{opacity:0.9}
+
+  table.svs-table{width:100%;border-collapse:collapse;font-size:13px}
+  table.svs-table th{text-align:center;color:var(--ink-dim);font-weight:700;font-size:11px;letter-spacing:0.06em;
+    text-transform:uppercase;padding:6px 4px;border-bottom:1px solid var(--card-border)}
+  table.svs-table th:first-child{text-align:left}
+  table.svs-table td{padding:10px 4px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05)}
+  table.svs-table td:first-child{text-align:left;font-weight:700}
+  table.svs-table tr:last-child td{border-bottom:none}
+  .svs-icon{
+    display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;
+    border-radius:999px;font-weight:800;font-size:11px;letter-spacing:0.04em;
+  }
+  .svs-icon.win{background:rgba(56,226,160,0.15);color:var(--green)}
+  .svs-icon.loss{background:rgba(255,93,122,0.15);color:var(--red)}
+  .svs-score{color:var(--green);font-weight:800}
+  .svs-footnote{margin-top:10px;font-size:11px;color:var(--ink-dim);text-align:center;font-style:italic}
 
   .timeline{position:relative;padding-left:18px}
   .timeline::before{
@@ -285,6 +309,12 @@
   </section>
 
   <section class="card">
+    <h2>SVS Track Record</h2>
+    <div id="svsTable"></div>
+    <p class="svs-footnote" id="svsFootnote"></p>
+  </section>
+
+  <section class="card">
     <h2>State Timeline</h2>
     <div class="timeline" id="timeline"></div>
   </section>
@@ -337,6 +367,15 @@ function renderPlayerCards(rows) {
   }).join('')}</div>`;
 }
 
+function renderSvsTable(rows) {
+  if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
+  const icon = (v) => v === 'TRUE'
+    ? '<span class="svs-icon win">WIN</span>'
+    : '<span class="svs-icon loss">LOSE</span>';
+  const body = rows.map((r) => `<tr><td>${r.enemy}</td><td>${icon(r.prep)}</td><td>${icon(r.battle)}</td><td class="svs-score">${r.score}</td></tr>`).join('');
+  return `<table class="svs-table"><thead><tr><th>Enemy</th><th>Prep</th><th>Battle</th><th>Score</th></tr></thead><tbody>${body}</tbody></table>`;
+}
+
 function renderEventCards(rows) {
   if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
   return `<div class="event-list">${rows.map((r) => {
@@ -367,7 +406,7 @@ function renderAlliances(alliances, council, events) {
           <span class="alliance-power">${a.power}</span>
         </div>
         ${a.description && a.description !== '-' ? `<div class="alliance-desc">${a.description}</div>` : ''}
-        ${a.recruiting && a.recruiting !== '-' ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
+        ${a.recruiting && a.recruiting !== '-' ? `<div class="recruiting"><b>Looking for:</b> ${a.recruiting}</div>` : ''}
         <div class="alliance-sub">
           <h4>Featured Players</h4>
           ${renderPlayerCards(alliancePlayers)}
@@ -437,7 +476,7 @@ document.getElementById('discordCopyBtn').addEventListener('click', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  const { info, transfer, governance, rules, council, alliances, events, timeline, updates } = CONFIG;
+  const { info, transfer, governance, rules, council, alliances, events, svs, timeline, updates } = CONFIG;
 
   document.getElementById('stateTitle').textContent = `State ${info.number}`;
   document.getElementById('stateTagline').textContent = info.tagline;
@@ -465,6 +504,9 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('transferGrid').innerHTML = box(eligible, true) + fields.map((f) => box(f, false)).join('');
 
   document.getElementById('alliances').innerHTML = renderAlliances(alliances, council, events);
+
+  document.getElementById('svsTable').innerHTML = renderSvsTable(svs);
+  document.getElementById('svsFootnote').textContent = info.svsNote || '';
 
   const age = stateAgeInDays(info.birthDate);
   const rows = timeline || [];

@@ -6,7 +6,8 @@ const CONFIG = {
     "birthDate": "2025-09-26",
     "svsRecord": "1-0",
     "leadingStateWins": "4",
-    "napLevel": "NAP3"
+    "napLevel": "NAP3",
+    "svsNote": "Records start from the date tracking began."
   },
   "transfer": {
     "isOpen": true,
@@ -109,25 +110,25 @@ const CONFIG = {
   ],
   "alliances": [
     {
-      "name": "CRY",
+      "name": "[CRY] CryBabies",
       "ranking": "1",
       "power": "22B",
       "description": "sample1",
-      "recruiting": "sample1"
+      "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "name": "ICE",
+      "name": "[ICE] IcebornSquirrel",
       "ranking": "2",
       "power": "25B",
       "description": "A friendly, active alliance.\nWe fight together and grow together.\nJoin us for daily events and fun.",
-      "recruiting": "sample2"
+      "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "name": "KOR",
+      "name": "[KOR] HappyNewYear",
       "ranking": "3",
       "power": "21B",
       "description": "sample3",
-      "recruiting": "sample3"
+      "recruiting": "Active 300M+ power, FC6+ players"
     }
   ],
   "events": [
@@ -184,6 +185,14 @@ const CONFIG = {
       "name": "Foundry / Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
+    }
+  ],
+  "svs": [
+    {
+      "enemy": "#3507",
+      "prep": "TRUE",
+      "battle": "TRUE",
+      "score": "6.8B"
     }
   ],
   "timeline": [

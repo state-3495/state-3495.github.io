@@ -5,5 +5,8 @@
   "scripts": {
     "sync": "node scripts/sync-sheet.js",
     "test": "node scripts/sync-sheet.test.js"
+  },
+  "dependencies": {
+    "google-auth-library": "^9"
   }
 }

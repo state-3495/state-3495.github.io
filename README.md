@@ -7,39 +7,37 @@ workflow pulls the sheet on a schedule and regenerates `config.js`.
 ## How it works
 
 ```
-Google Sheet (Anyone with the link: Viewer) --> scripts/sync-sheet.js --> config.js --> GitHub Pages
+Google Sheet (private, shared with a service account) --> scripts/sync-sheet.js --> config.js --> GitHub Pages
 ```
 
 No backend server runs anywhere. The sync script reads the sheet through the
-official Sheets API v4 (with a read-only API key, inside GitHub Actions,
-free for public repos), commits the regenerated `config.js`, and that push
-triggers a normal Pages rebuild.
-
-Sheet: https://docs.google.com/spreadsheets/d/1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk/edit
+official Sheets API v4, authenticated as a Google service account (inside
+GitHub Actions, free for public repos), commits the regenerated `config.js`,
+and that push triggers a normal Pages rebuild. The sheet ID and the service
+account key are both GitHub Actions secrets, never committed to the repo.
 
 ## 1. Sheet sharing
 
-Share the Google Sheet as **"Anyone with the link: Viewer"**. The API key
-below only works for publicly-readable sheets. Do not put anything
-sensitive in this sheet: it's effectively public.
+The sheet does **not** need to be publicly shared. Share it only with the
+service account's email (see step 2 below) as **Viewer**. If it was
+previously shared as "Anyone with the link", you can remove that now.
 
-## 2. API key setup (one-time)
-
-We previously scraped the sheet as CSV via a public export URL, but that
-endpoint has its own server-side cache (edits could take a few minutes to
-show up). The Sheets API v4 has no such cache, so edits are reflected
-immediately.
+## 2. Service account setup (one-time)
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create
    (or reuse) a project.
 2. Enable the **Google Sheets API** for that project (APIs & Services >
    Library).
-3. Go to APIs & Services > Credentials > Create Credentials > API key.
-4. Restrict the key: API restrictions > Google Sheets API only. (This key
-   only grants read access to public sheets, but restricting it limits how
-   it could be reused if it ever leaked.)
+3. Create a **Service Account** (IAM & Admin > Service Accounts), then create
+   a JSON key for it and download it.
+4. Share the Google Sheet with the service account's email (the
+   `client_email` field in the JSON key, looks like
+   `xxx@yyy.iam.gserviceaccount.com`) as **Viewer**.
 5. In the GitHub repo, go to Settings > Secrets and variables > Actions, and
-   add a new secret named `GOOGLE_SHEETS_API_KEY` with the key value.
+   add two secrets:
+   - `GCP_SA_KEY`: the full contents of the JSON key file
+   - `GOOGLE_SHEET_ID`: the sheet's ID (the long string in its URL, between
+     `/d/` and `/edit`)
 
 ## 3. Sheet structure
 
@@ -56,6 +54,8 @@ The sheet needs exactly 8 tabs.
 | leadingStateWins | 0 |
 | napLevel | NAP6 |
 | ranking | - |
+| svsRating | 4 (optional, 0-5 star rating shown above the SVS table) |
+| svsNote | Records start from the date tracking began. (optional footnote under the SVS table) |
 
 **Tab `transfer`** (2 columns: `field`, `value`)
 
@@ -105,6 +105,8 @@ clickable icon that opens a copy-to-clipboard popup instead of plain text)
 |---|---|---|---|---|
 | ICE | 1 | 50M | Main alliance, NAP6 verified | Active 500K+ power players |
 
+`recruiting` renders as a "Looking for: ..." callout under the description.
+
 **Tab `events`** (recurring daily events, grouped by alliance on the site;
 `time1`/`time2` are two daily run times)
 
@@ -113,6 +115,13 @@ clickable icon that opens a copy-to-clipboard popup instead of plain text)
 | ICE | Bear Trap | 14:00 | 20:00 |
 | ICE | Crazy Joe | 20:00 | - |
 | ICE | Foundry Canyon | 10:00 | 22:00 |
+
+**Tab `svs`** (one row per SVS match, shown in the SVS Track Record card)
+
+| enemy | prep | battle | score |
+|---|---|---|---|
+| #3201 | TRUE | FALSE | 8.6B |
+| #3269 | FALSE | TRUE | 7.8B |
 
 **Tab `timeline`** (state-age milestones, not alliance-specific; see
 [whiteoutsurvival.pl/state-timeline](https://whiteoutsurvival.pl/state-timeline/)
@@ -142,7 +151,7 @@ renders automatically without any code change.
   ("Sync Google Sheet" > Run workflow), or run it locally:
 
   ```bash
-  GOOGLE_SHEETS_API_KEY="..." npm run sync
+  GOOGLE_SHEET_ID="..." GCP_SA_KEY="$(cat service-account.json)" npm run sync
   ```
 
 ## 5. Local development
