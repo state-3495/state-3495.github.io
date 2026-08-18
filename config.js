@@ -13,8 +13,8 @@ const CONFIG = {
     "groupNumber": "14",
     "eligibleStatesStart": "3385",
     "eligibleStatesEnd": "3571",
-    "periodStart": "2026/08/16",
-    "periodEnd": "2026/08/22",
+    "periodStart": "August 16",
+    "periodEnd": "August 22",
     "spotsLeft": "30",
     "spotsTotal": "30",
     "powerCap": "187M",
@@ -145,7 +145,43 @@ const CONFIG = {
     },
     {
       "alliance": "ICE",
-      "name": "Foundry Canyon",
+      "name": "Foundry / Canyon",
+      "time 1": "10:00",
+      "time 2": "3:00"
+    },
+    {
+      "alliance": "CRY",
+      "name": "🐻Bear Trap",
+      "time 1": "14:00",
+      "time 2": "2:00"
+    },
+    {
+      "alliance": "CRY",
+      "name": "Crazy Joe",
+      "time 1": "20:00",
+      "time 2": "1:00"
+    },
+    {
+      "alliance": "CRY",
+      "name": "Foundry / Canyon",
+      "time 1": "10:00",
+      "time 2": "3:00"
+    },
+    {
+      "alliance": "KOR",
+      "name": "🐻Bear Trap",
+      "time 1": "14:00",
+      "time 2": "2:00"
+    },
+    {
+      "alliance": "KOR",
+      "name": "Crazy Joe",
+      "time 1": "20:00",
+      "time 2": "1:00"
+    },
+    {
+      "alliance": "KOR",
+      "name": "Foundry / Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
     }
@@ -168,8 +204,8 @@ const CONFIG = {
     },
     {
       "day": "315",
-      "title": "Fire Crystal levels 6-8 unlock.",
-      "description": ""
+      "title": "Fire Crystal levels 6-8",
+      "description": "Fire Crystal levels 6-8 unlock."
     },
     {
       "day": "360",
