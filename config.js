@@ -4,7 +4,7 @@ const CONFIG = {
     "number": "3500",
     "tagline": "VERIFIED WINNER STATE",
     "birthDate": "2025-09-26",
-    "svsRecord": "0-0",
+    "svsRecord": "1-0",
     "leadingStateWins": "4",
     "napLevel": "NAP3"
   },
