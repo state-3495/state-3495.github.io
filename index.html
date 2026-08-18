@@ -145,7 +145,10 @@
   .alliance-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
   .alliance-name{font-size:17px;font-weight:800;color:var(--cyan)}
   .alliance-power{margin-left:auto;font-size:13px;color:var(--ink-dim);font-weight:700}
-  .alliance-desc{font-size:13px;color:var(--ink-dim);margin-bottom:10px}
+  .alliance-desc{
+    font-size:14px;line-height:1.6;color:var(--ink);font-weight:500;
+    margin:10px 0 14px;white-space:pre-line;
+  }
   .recruiting{
     font-size:12.5px; padding:8px 12px; margin-bottom:12px; border-radius:10px;
     background:rgba(255,215,106,0.07); border-left:3px solid var(--gold); color:var(--ink);
@@ -164,6 +167,14 @@
   .player-name{font-weight:700;font-size:13.5px}
   .player-meta{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .player-chip{font-size:11px;color:var(--ink-dim);background:rgba(255,255,255,0.05);padding:3px 9px;border-radius:999px}
+
+  .event-list{display:flex;flex-direction:column;gap:10px}
+  .event-card{border:1px solid var(--card-border);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02)}
+  .event-name{font-size:11px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
+  .event-times{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
+  .event-time-box{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 6px;text-align:center}
+  .event-time-label{font-size:10px;letter-spacing:0.08em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:4px}
+  .event-time-value{font-family:ui-monospace,"JetBrains Mono",Menlo,monospace;font-size:17px;font-weight:800;color:var(--cyan)}
 
   .discord-icon-btn{
     display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
@@ -313,6 +324,16 @@ function renderPlayerCards(rows) {
   }).join('')}</div>`;
 }
 
+function renderEventCards(rows) {
+  if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
+  return `<div class="event-list">${rows.map((r) => {
+    const keys = Object.keys(r);
+    const [nameKey, ...timeKeys] = keys;
+    const boxes = timeKeys.map((k) => `<div class="event-time-box"><div class="event-time-label">${k}</div><div class="event-time-value">${r[k] || '-'}</div></div>`).join('');
+    return `<div class="event-card"><div class="event-name">${r[nameKey]}</div><div class="event-times">${boxes}</div></div>`;
+  }).join('')}</div>`;
+}
+
 function rankBadge(ranking) {
   const n = String(ranking);
   const cls = ['1', '2', '3'].includes(n) ? ` r${n}` : '';
@@ -332,15 +353,15 @@ function renderAlliances(alliances, council, events) {
           <span class="alliance-name">${a.name}</span>
           <span class="alliance-power">${a.power}</span>
         </div>
-        <div class="alliance-desc">${a.description || ''}</div>
-        ${a.recruiting ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
+        ${a.description && a.description !== '-' ? `<div class="alliance-desc">${a.description}</div>` : ''}
+        ${a.recruiting && a.recruiting !== '-' ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
         <div class="alliance-sub">
           <h4>Featured Players</h4>
           ${renderPlayerCards(alliancePlayers)}
         </div>
         <div class="alliance-sub">
           <h4>Events</h4>
-          ${renderTable(allianceEvents)}
+          ${renderEventCards(allianceEvents)}
         </div>
       </div>`;
   }).join('');
@@ -424,7 +445,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ['Period', `${transfer.periodStart} ~ ${transfer.periodEnd}`],
     ['Spots', `${transfer.spotsLeft} / ${transfer.spotsTotal}`],
     ['Power Cap', transfer.powerCap],
-    ['Special Tickets', transfer.specialTickets],
+    ['Special Tickets', transfer.specialTickets || '-'],
   ];
   document.getElementById('transferGrid').innerHTML = fields
     .map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`)
