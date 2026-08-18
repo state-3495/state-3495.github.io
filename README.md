@@ -24,7 +24,7 @@ sensitive in this sheet: it's effectively public.
 
 ## 2. Sheet structure
 
-The sheet needs exactly 9 tabs.
+The sheet needs exactly 8 tabs.
 
 **Tab `info`** (2 columns: `field`, `value`)
 
@@ -71,23 +71,17 @@ The sheet needs exactly 9 tabs.
 |---|
 | No KE without a declared war. |
 
-**Tab `council`** (1 column: `member`, one row per council member)
+**Tab `council`** (one row per member)
 
-| member |
-|---|
-| PlayerOne - President, ICE |
+| member | Role | alliance | power |
+|---|---|---|---|
+| PlayerOne | President | ICE | 1.2B |
 
 **Tab `alliances`** (one row per alliance)
 
 | name | ranking | power | description | recruiting |
 |---|---|---|---|---|
 | ICE | 1 | 50M | Main alliance, NAP6 verified | Active 500K+ power players |
-
-**Tab `players`** (one row per player, grouped by alliance on the site)
-
-| alliance | name | role | power | note |
-|---|---|---|---|---|
-| ICE | PlayerOne | President | 1.2B | Been here since day 1 |
 
 **Tab `events`** (recurring daily events, grouped by alliance on the site;
 `time1`/`time2` are two daily run times)
@@ -114,9 +108,9 @@ for reference values)
 | 2026-08-16 | 12:00 | Grand Opening | State 3500 is now open. |
 
 `TRUE`/`FALSE` values in `info`/`transfer` are parsed as booleans; everything
-else stays a string. Adding a row to `alliances`/`players`/`events`/`rules`/
-`council`/`updates` adds a line on the site; adding a column to
-`alliances`/`players`/`events` renders automatically without any code change.
+else stays a string. Adding a row to `alliances`/`events`/`rules`/`council`/
+`updates` adds a line on the site; adding a column to `alliances`/`events`
+renders automatically without any code change.
 
 ## 3. Running the sync
 

@@ -2,7 +2,7 @@
 // Sheet must be shared as "Anyone with the link: Viewer".
 const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
 const KV_TABS = ["info", "transfer", "governance"];
-const LIST_TABS = ["rules", "council", "alliances", "players", "events", "timeline", "updates"];
+const LIST_TABS = ["rules", "council", "alliances", "events", "timeline", "updates"];
 
 export function parseCsv(text) {
   const rows = [];

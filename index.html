@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>State 3500 | Whiteout Survival</title>
-<script src="config.js?v=9a9986d7" defer></script>
+<script src="config.js?v=a3d92e31" defer></script>
 <style>
   :root{
     --bg-0:#060b18; --bg-1:#0b1530; --bg-2:#0f1f45;
@@ -246,12 +246,10 @@ function rankBadge(ranking) {
   return `<span class="rank-badge${cls}">#${ranking}</span>`;
 }
 
-function renderAlliances(alliances, players, events) {
+function renderAlliances(alliances, events) {
   if (!alliances || !alliances.length) return '<p class="empty">No data yet.</p>';
   return alliances.map((a) => {
-    const own = (rows) => (rows || []).filter((r) => r.alliance === a.name).map(({ alliance, ...rest }) => rest);
-    const alliancePlayers = own(players);
-    const allianceEvents = own(events);
+    const allianceEvents = (events || []).filter((r) => r.alliance === a.name).map(({ alliance, ...rest }) => rest);
     return `
       <div class="alliance-card">
         <div class="alliance-head">
@@ -261,10 +259,6 @@ function renderAlliances(alliances, players, events) {
         </div>
         <div class="alliance-desc">${a.description || ''}</div>
         ${a.recruiting ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
-        <div class="alliance-sub">
-          <h4>Players</h4>
-          ${renderTable(alliancePlayers)}
-        </div>
         <div class="alliance-sub">
           <h4>Events</h4>
           ${renderTable(allianceEvents)}
@@ -299,7 +293,7 @@ function renderGovernance(gov, rules, council) {
     <div class="gov-subhead">Rules</div>
     ${list(rules, 'rule')}
     <div class="gov-subhead">Council</div>
-    ${list(council, 'member')}`;
+    ${renderTable(council)}`;
 }
 
 function stateAgeInDays(birthDate) {
@@ -309,7 +303,7 @@ function stateAgeInDays(birthDate) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const { info, transfer, governance, alliances, players, events, timeline, updates } = CONFIG;
+  const { info, transfer, governance, alliances, events, timeline, updates } = CONFIG;
 
   document.getElementById('stateTitle').textContent = `State ${info.number}`;
   document.getElementById('stateTagline').textContent = info.tagline;
@@ -334,7 +328,7 @@ window.addEventListener('DOMContentLoaded', () => {
     .map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`)
     .join('');
 
-  document.getElementById('alliances').innerHTML = renderAlliances(alliances, players, events);
+  document.getElementById('alliances').innerHTML = renderAlliances(alliances, events);
 
   const age = stateAgeInDays(info.birthDate);
   const rows = timeline || [];

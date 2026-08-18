@@ -9,7 +9,7 @@ const CONFIG = {
     "napLevel": "NAP3"
   },
   "transfer": {
-    "isOpen": "",
+    "isOpen": true,
     "groupNumber": "14",
     "eligibleStatesStart": "3385",
     "eligibleStatesEnd": "3571",
@@ -17,7 +17,7 @@ const CONFIG = {
     "periodEnd": "2026/08/22",
     "spotsLeft": "30",
     "spotsTotal": "30",
-    "powerCap": ""
+    "powerCap": "187M"
   },
   "governance": {
     "peaceLevelPercentage": "90",
@@ -39,10 +39,16 @@ const CONFIG = {
   ],
   "council": [
     {
-      "member": "PlayerOne - President, ICE"
+      "member": "PlayerOne",
+      "Role": "President",
+      "alliance": "ICE",
+      "power": "1.2B"
     },
     {
-      "member": "PlayerTwo - Chief of Staff, ICE"
+      "member": "PlayerTwo",
+      "Role": "Staff",
+      "alliance": "CRY",
+      "power": "520M"
     }
   ],
   "alliances": [
@@ -50,33 +56,22 @@ const CONFIG = {
       "name": "CRY",
       "ranking": "1",
       "power": "22B",
-      "description": "-"
+      "description": "-",
+      "recruiting": "-"
     },
     {
       "name": "ICE",
       "ranking": "2",
       "power": "25B",
-      "description": "-"
+      "description": "-",
+      "recruiting": "-"
     },
     {
       "name": "KOR",
       "ranking": "3",
       "power": "21B",
-      "description": "-"
-    }
-  ],
-  "players": [
-    {
-      "alliance": "ICE",
-      "name": "PlayerOne",
-      "role": "President",
-      "power": "1.2B"
-    },
-    {
-      "alliance": "CRY",
-      "name": "PlayerTwo",
-      "role": "Chief of Staff",
-      "power": "1.1B"
+      "description": "-",
+      "recruiting": "-"
     }
   ],
   "events": [
