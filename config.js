@@ -59,22 +59,22 @@ const CONFIG = {
       "name": "CRY",
       "ranking": "1",
       "power": "22B",
-      "description": "-",
-      "recruiting": "-"
+      "description": "sample1",
+      "recruiting": "sample1"
     },
     {
       "name": "ICE",
       "ranking": "2",
       "power": "25B",
-      "description": "-",
-      "recruiting": "-"
+      "description": "sample2",
+      "recruiting": "sample2"
     },
     {
       "name": "KOR",
       "ranking": "3",
       "power": "21B",
-      "description": "-",
-      "recruiting": "-"
+      "description": "sample3",
+      "recruiting": "sample3"
     }
   ],
   "events": [
