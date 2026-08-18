@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
-import { toKeyValue, toUpdates } from "./sync-sheet.js";
+import { parseCsv, toKeyValue, toUpdates } from "./sync-sheet.js";
+
+assert.deepEqual(
+  parseCsv('field,value\nnumber,3500\ntagline,"Verified, Winner"\n'),
+  [["field", "value"], ["number", "3500"], ["tagline", "Verified, Winner"]]
+);
 
 assert.deepEqual(toKeyValue([["field", "value"], ["isOpen", "TRUE"], ["spots", "12"]]), {
   isOpen: true,

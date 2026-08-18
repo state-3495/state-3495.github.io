@@ -7,14 +7,20 @@ workflow pulls the sheet on a schedule and regenerates `config.js`.
 ## How it works
 
 ```
-Google Sheet (private) --[Service Account]--> scripts/sync-sheet.js --> config.js --> GitHub Pages
+Google Sheet (Anyone with the link: Viewer) --> scripts/sync-sheet.js --> config.js --> GitHub Pages
 ```
 
-No backend server runs anywhere. The sync script runs inside GitHub Actions
-(free for public repos), commits the regenerated `config.js`, and that push
-triggers a normal Pages rebuild.
+No backend server runs anywhere. The sync script fetches the sheet as CSV
+(no API key needed) inside GitHub Actions (free for public repos), commits
+the regenerated `config.js`, and that push triggers a normal Pages rebuild.
 
-## 1. Sheet structure
+## 1. Sheet sharing
+
+Share the Google Sheet as **"Anyone with the link: Viewer"**. This lets the
+sync script read it as CSV without any credentials. Do not put anything
+sensitive in this sheet: it's effectively public.
+
+## 2. Sheet structure
 
 The sheet needs exactly 3 tabs, named `info`, `transfer`, `updates`.
 
@@ -51,23 +57,6 @@ The sheet needs exactly 3 tabs, named `info`, `transfer`, `updates`.
 
 `TRUE`/`FALSE` values are parsed as booleans; everything else stays a string.
 
-## 2. Service account setup (one-time)
-
-The sheet is shared with specific people only, so the sync job needs its own
-Google identity to read it.
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create
-   (or reuse) a project.
-2. Enable the **Google Sheets API** for that project.
-3. Create a **Service Account** (IAM & Admin > Service Accounts), then create
-   a JSON key for it and download it.
-4. Open the Google Sheet, click Share, and add the service account's email
-   (looks like `xxx@yyy.iam.gserviceaccount.com`, found in the JSON key) as
-   **Viewer**.
-5. In the GitHub repo, go to Settings > Secrets and variables > Actions, and
-   add a new secret named `GCP_SA_KEY` with the full contents of the JSON key
-   file as the value.
-
 ## 3. Running the sync
 
 - **Automatic**: the workflow in `.github/workflows/sync-sheet.yml` runs
@@ -76,8 +65,7 @@ Google identity to read it.
   ("Sync Google Sheet" > Run workflow), or run it locally:
 
   ```bash
-  npm install
-  GCP_SA_KEY="$(cat service-account.json)" npm run sync
+  npm run sync
   ```
 
 ## 4. Local development

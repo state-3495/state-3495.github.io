@@ -1,10 +1,34 @@
-// Pulls data from a private Google Sheet (via a Service Account) and regenerates config.js.
-// Requires env var GCP_SA_KEY: the full JSON key of a service account that has
-// been shared on the sheet as a Viewer.
-import { GoogleAuth } from "google-auth-library";
-
+// Pulls data from the public Google Sheet and regenerates config.js.
+// Sheet must be shared as "Anyone with the link: Viewer".
 const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
 const TABS = ["info", "transfer", "updates"];
+
+export function parseCsv(text) {
+  const rows = [];
+  let row = [], cell = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { cell += c; }
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ',') {
+      row.push(cell); cell = "";
+    } else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); cell = "";
+      if (row.some((v) => v !== "")) rows.push(row);
+      row = [];
+    } else {
+      cell += c;
+    }
+  }
+  row.push(cell);
+  if (row.some((v) => v !== "")) rows.push(row);
+  return rows;
+}
 
 export function toKeyValue(rows) {
   const out = {};
@@ -20,24 +44,19 @@ export function toUpdates(rows) {
   return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
 }
 
-async function fetchTabs() {
-  if (!process.env.GCP_SA_KEY) {
-    throw new Error("GCP_SA_KEY env var is not set. See README.md for setup.");
+async function fetchTab(name) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch tab "${name}": ${res.status}`);
+  const text = await res.text();
+  if (text.trimStart().startsWith("<")) {
+    throw new Error(`Tab "${name}" returned HTML, not CSV. Make sure the sheet is shared as "Anyone with the link: Viewer" and a tab named "${name}" exists.`);
   }
-  const auth = new GoogleAuth({
-    credentials: JSON.parse(process.env.GCP_SA_KEY),
-    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
-  });
-  const client = await auth.getClient();
-
-  const ranges = TABS.map((t) => `ranges=${encodeURIComponent(t)}`).join("&");
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet?${ranges}`;
-  const res = await client.request({ url });
-  return res.data.valueRanges.map((r) => r.values ?? []);
+  return parseCsv(text);
 }
 
 async function main() {
-  const [infoRows, transferRows, updatesRows] = await fetchTabs();
+  const [infoRows, transferRows, updatesRows] = await Promise.all(TABS.map(fetchTab));
 
   const config = {
     info: toKeyValue(infoRows),
