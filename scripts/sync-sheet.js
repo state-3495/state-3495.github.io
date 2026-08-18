@@ -1,7 +1,8 @@
 // Pulls data from the public Google Sheet and regenerates config.js.
 // Sheet must be shared as "Anyone with the link: Viewer".
 const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
-const TABS = ["info", "transfer", "updates"];
+const KV_TABS = ["info", "transfer"];
+const LIST_TABS = ["alliances", "players", "events", "timeline", "updates"];
 
 export function parseCsv(text) {
   const rows = [];
@@ -39,7 +40,7 @@ export function toKeyValue(rows) {
   return out;
 }
 
-export function toUpdates(rows) {
+export function toList(rows) {
   const [header, ...body] = rows;
   return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
 }
@@ -56,13 +57,14 @@ async function fetchTab(name) {
 }
 
 async function main() {
-  const [infoRows, transferRows, updatesRows] = await Promise.all(TABS.map(fetchTab));
+  const [kvRows, listRows] = await Promise.all([
+    Promise.all(KV_TABS.map(fetchTab)),
+    Promise.all(LIST_TABS.map(fetchTab)),
+  ]);
 
-  const config = {
-    info: toKeyValue(infoRows),
-    transfer: toKeyValue(transferRows),
-    updates: toUpdates(updatesRows),
-  };
+  const config = {};
+  KV_TABS.forEach((name, i) => { config[name] = toKeyValue(kvRows[i]); });
+  LIST_TABS.forEach((name, i) => { config[name] = toList(listRows[i]); });
 
   const fs = await import("node:fs/promises");
   const path = await import("node:path");

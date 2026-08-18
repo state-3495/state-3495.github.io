@@ -2,7 +2,7 @@ name: Sync Google Sheet
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "0 0 * * *" # 09:00 KST (UTC+9)
   workflow_dispatch: {}
 
 permissions:

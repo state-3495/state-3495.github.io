@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { parseCsv, toKeyValue, toUpdates } from "./sync-sheet.js";
+import { parseCsv, toKeyValue, toList } from "./sync-sheet.js";
 
 assert.deepEqual(
   parseCsv('field,value\nnumber,3500\ntagline,"Verified, Winner"\n'),
@@ -12,7 +12,7 @@ assert.deepEqual(toKeyValue([["field", "value"], ["isOpen", "TRUE"], ["spots", "
 });
 
 assert.deepEqual(
-  toUpdates([["date", "title"], ["2026-08-16", "Open"]]),
+  toList([["date", "title"], ["2026-08-16", "Open"]]),
   [{ date: "2026-08-16", title: "Open" }]
 );
 
