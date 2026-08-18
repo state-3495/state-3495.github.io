@@ -17,7 +17,9 @@ const CONFIG = {
     "periodEnd": "2026/08/22",
     "spotsLeft": "30",
     "spotsTotal": "30",
-    "powerCap": "187M"
+    "powerCap": "187M",
+    "leadingState": true,
+    "specialTickets": "1"
   },
   "governance": {
     "peaceLevelLabel": "Peace Level",
@@ -45,13 +47,64 @@ const CONFIG = {
       "member": "PlayerOne",
       "Role": "President",
       "alliance": "ICE",
-      "power": "1.2B"
+      "power": "1.2B",
+      "discord": "test1"
     },
     {
       "member": "PlayerTwo",
-      "Role": "Staff",
+      "Role": "R4",
+      "alliance": "ICE",
+      "power": "520M",
+      "discord": "test2"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "ICE",
+      "power": "520M",
+      "discord": "test3"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
       "alliance": "CRY",
-      "power": "520M"
+      "power": "520M",
+      "discord": "test4"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "CRY",
+      "power": "520M",
+      "discord": "test5"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "CRY",
+      "power": "520M",
+      "discord": "test6"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "KOR",
+      "power": "520M",
+      "discord": "test7"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "KOR",
+      "power": "520M",
+      "discord": "test8"
+    },
+    {
+      "member": "PlayerTwo",
+      "Role": "R4",
+      "alliance": "KOR",
+      "power": "520M",
+      "discord": "test9"
     }
   ],
   "alliances": [
@@ -66,7 +119,7 @@ const CONFIG = {
       "name": "ICE",
       "ranking": "2",
       "power": "25B",
-      "description": "sample2",
+      "description": "A friendly, active alliance.\nWe fight together and grow together.\nJoin us for daily events and fun.",
       "recruiting": "sample2"
     },
     {
@@ -80,7 +133,7 @@ const CONFIG = {
   "events": [
     {
       "alliance": "ICE",
-      "name": "Bear Trap",
+      "name": "🐻Bear Trap",
       "time 1": "14:00",
       "time 2": "2:00"
     },
@@ -114,9 +167,14 @@ const CONFIG = {
       "description": "Sunfire Castle event begins (Saturdays)."
     },
     {
+      "day": "315",
+      "title": "Fire Crystal levels 6-8 unlock.",
+      "description": ""
+    },
+    {
       "day": "360",
-      "title": "Gen 6",
-      "description": "Gen6 Heros Open"
+      "title": "Gen 6 Heroes",
+      "description": "Gen6 Heros unlock"
     },
     {
       "day": "500",
