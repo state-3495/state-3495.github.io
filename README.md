@@ -62,6 +62,7 @@ The sheet needs exactly 8 tabs.
 | field | value |
 |---|---|
 | isOpen | TRUE |
+| leadingState | TRUE (optional; shows an orange "LEADING" badge next to OPEN/CLOSED) |
 | groupNumber | - |
 | eligibleStatesStart | - |
 | eligibleStatesEnd | - |
@@ -70,6 +71,7 @@ The sheet needs exactly 8 tabs.
 | spotsLeft | - |
 | spotsTotal | - |
 | powerCap | - |
+| specialTickets | - |
 
 **Tab `governance`** (2 columns: `field`, `value`)
 
@@ -90,11 +92,12 @@ The sheet needs exactly 8 tabs.
 |---|
 | No KE without a declared war. |
 
-**Tab `council`** (one row per member)
+**Tab `council`** (one row per member; a `discord` column renders as a
+clickable icon that opens a copy-to-clipboard popup instead of plain text)
 
-| member | Role | alliance | power |
-|---|---|---|---|
-| PlayerOne | President | ICE | 1.2B |
+| member | Role | alliance | power | discord |
+|---|---|---|---|---|
+| PlayerOne | President | ICE | 1.2B | PlayerOne#1234 |
 
 **Tab `alliances`** (one row per alliance)
 

@@ -90,11 +90,19 @@
   .open{background:rgba(56,226,160,0.12);color:var(--green);border:1px solid rgba(56,226,160,0.4);
     animation:pulse-open 1.8s ease-in-out infinite}
   .closed{background:rgba(255,93,122,0.12);color:var(--red);border:1px solid rgba(255,93,122,0.4)}
+  .leading-badge{
+    display:none;margin-left:8px;padding:5px 14px;border-radius:999px;
+    font-size:12px;font-weight:800;letter-spacing:0.08em;
+    color:var(--gold);background:rgba(255,215,106,0.12);border:1px solid rgba(255,215,106,0.45);
+  }
+  .leading-badge.show{display:inline-block}
   @keyframes pulse-open{ 0%,100%{box-shadow:0 0 0 rgba(56,226,160,0.0)} 50%{box-shadow:0 0 14px rgba(56,226,160,0.5)} }
 
-  .transfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
-  .transfer-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--card-border);padding:7px 0}
-  .transfer-grid b{color:var(--ink-dim);font-weight:500}
+  .transfer-grid{display:flex;flex-direction:column;font-size:13px}
+  .transfer-grid div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--card-border);padding:8px 0}
+  .transfer-grid div:last-child{border-bottom:none}
+  .transfer-grid b{color:var(--ink-dim);font-weight:500;flex-shrink:0}
+  .transfer-grid span{text-align:right}
 
   table{width:100%;border-collapse:collapse;font-size:13px}
   th{text-align:left;color:var(--ink-dim);font-weight:700;font-size:11px;letter-spacing:0.06em;
@@ -149,6 +157,40 @@
   }
   .alliance-sub:first-of-type h4{margin-top:0}
   .note{color:var(--ink-dim);font-style:italic}
+
+  .player-list{display:flex;flex-direction:column}
+  .player-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+  .player-row:last-child{border-bottom:none}
+  .player-name{font-weight:700;font-size:13.5px}
+  .player-meta{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .player-chip{font-size:11px;color:var(--ink-dim);background:rgba(255,255,255,0.05);padding:3px 9px;border-radius:999px}
+
+  .discord-icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+    border-radius:8px;border:none;background:rgba(88,101,242,0.15);color:#8891ff;
+    cursor:pointer;transition:background 0.15s;flex-shrink:0;
+  }
+  .discord-icon-btn:hover{background:rgba(88,101,242,0.3)}
+  .discord-icon-btn svg{width:14px;height:14px}
+
+  .discord-modal{
+    display:none;position:fixed;inset:0;background:rgba(3,6,14,0.7);backdrop-filter:blur(2px);
+    align-items:center;justify-content:center;z-index:50;padding:16px;
+  }
+  .discord-modal.open{display:flex}
+  .discord-modal-box{
+    background:var(--bg-1);border:1px solid var(--card-border);border-radius:16px;
+    padding:20px;max-width:320px;width:100%;box-shadow:0 20px 50px -12px rgba(0,0,0,0.6);
+  }
+  .discord-modal-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .discord-modal-head svg{width:22px;height:22px;color:#8891ff;flex-shrink:0}
+  .discord-modal-name{font-weight:700;font-size:14px;word-break:break-all}
+  .discord-copy-btn{
+    width:100%;padding:10px;border-radius:10px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));color:#04131c;
+    font-weight:800;font-size:13px;letter-spacing:0.03em;transition:opacity 0.15s;
+  }
+  .discord-copy-btn:hover{opacity:0.9}
 
   .timeline{position:relative;padding-left:18px}
   .timeline::before{
@@ -209,7 +251,7 @@
 
   <section class="card">
     <h2>Transfer</h2>
-    <span class="transfer-status" id="transferStatus"></span>
+    <span class="transfer-status" id="transferStatus"></span><span class="leading-badge" id="leadingBadge">LEADING</span>
     <div class="transfer-grid" id="transferGrid"></div>
   </section>
 
@@ -231,6 +273,16 @@
   <footer>Powered by ZICO</footer>
 </div>
 
+<div class="discord-modal" id="discordModal">
+  <div class="discord-modal-box">
+    <div class="discord-modal-head">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.4-2.157 2.4z"/></svg>
+      <span class="discord-modal-name" id="discordModalName"></span>
+    </div>
+    <button class="discord-copy-btn" id="discordCopyBtn">Copy</button>
+  </div>
+</div>
+
 <script>
 function renderTable(rows, excludeKeys) {
   excludeKeys = excludeKeys || [];
@@ -242,6 +294,23 @@ function renderTable(rows, excludeKeys) {
     return `<td${cls}>${r[h]}</td>`;
   }).join('')}</tr>`).join('');
   return `<table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
+}
+
+const DISCORD_ICON_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.4-2.157 2.4z"/></svg>';
+
+function renderPlayerCards(rows) {
+  if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
+  return `<div class="player-list">${rows.map((r) => {
+    const keys = Object.keys(r);
+    const [nameKey, ...metaKeys] = keys;
+    const chips = metaKeys.map((k) => {
+      if (k.toLowerCase() === 'discord' && r[k]) {
+        return `<button class="discord-icon-btn" data-discord="${r[k]}" title="Discord: ${r[k]}">${DISCORD_ICON_SVG}</button>`;
+      }
+      return r[k] ? `<span class="player-chip">${r[k]}</span>` : '';
+    }).join('');
+    return `<div class="player-row"><span class="player-name">${r[nameKey]}</span><span class="player-meta">${chips}</span></div>`;
+  }).join('')}</div>`;
 }
 
 function rankBadge(ranking) {
@@ -266,8 +335,8 @@ function renderAlliances(alliances, council, events) {
         <div class="alliance-desc">${a.description || ''}</div>
         ${a.recruiting ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
         <div class="alliance-sub">
-          <h4>Players</h4>
-          ${renderTable(alliancePlayers)}
+          <h4>Featured Players</h4>
+          ${renderPlayerCards(alliancePlayers)}
         </div>
         <div class="alliance-sub">
           <h4>Events</h4>
@@ -310,6 +379,29 @@ function stateAgeInDays(birthDate) {
   return Math.floor((Date.now() - start.getTime()) / 86400000);
 }
 
+function openDiscordModal(username) {
+  document.getElementById('discordModalName').textContent = username;
+  document.getElementById('discordCopyBtn').textContent = 'Copy';
+  document.getElementById('discordModal').classList.add('open');
+}
+
+function closeDiscordModal() {
+  document.getElementById('discordModal').classList.remove('open');
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.discord-icon-btn');
+  if (btn) { openDiscordModal(btn.dataset.discord); return; }
+  if (e.target.id === 'discordModal') closeDiscordModal();
+});
+
+document.getElementById('discordCopyBtn').addEventListener('click', () => {
+  const username = document.getElementById('discordModalName').textContent;
+  navigator.clipboard.writeText(username).then(() => {
+    document.getElementById('discordCopyBtn').textContent = 'Copied!';
+  });
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   const { info, transfer, governance, rules, council, alliances, events, timeline, updates } = CONFIG;
 
@@ -324,6 +416,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const statusEl = document.getElementById('transferStatus');
   statusEl.textContent = transfer.isOpen ? 'OPEN' : 'CLOSED';
   statusEl.className = `transfer-status ${transfer.isOpen ? 'open' : 'closed'}`;
+  document.getElementById('leadingBadge').classList.toggle('show', transfer.leadingState === true);
 
   const fields = [
     ['Group', transfer.groupNumber],
@@ -331,6 +424,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ['Period', `${transfer.periodStart} ~ ${transfer.periodEnd}`],
     ['Spots', `${transfer.spotsLeft} / ${transfer.spotsTotal}`],
     ['Power Cap', transfer.powerCap],
+    ['Special Tickets', transfer.specialTickets],
   ];
   document.getElementById('transferGrid').innerHTML = fields
     .map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`)
