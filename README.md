@@ -115,7 +115,7 @@ renders automatically without any code change.
 ## 3. Running the sync
 
 - **Automatic**: the workflow in `.github/workflows/sync-sheet.yml` runs
-  daily at 09:00 KST and pushes `config.js` if the sheet changed.
+  every 10 minutes and pushes `config.js` if the sheet changed.
 - **Manual**: trigger it anytime from the repo's Actions tab
   ("Sync Google Sheet" > Run workflow), or run it locally:
 
