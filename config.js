@@ -4,7 +4,7 @@ const CONFIG = {
     "tagline": "VERIFIED WINNER STATE",
     "birthDate": "2025-09-26",
     "svsRecord": "0-0",
-    "leadingStateWins": "",
+    "leadingStateWins": "-",
     "napLevel": "NAP4",
     "ranking": "-"
   },
@@ -20,28 +20,10 @@ const CONFIG = {
   },
   "updates": [
     {
-      "3500": "VERIFIED WINNER STATE",
-      "number": "tagline"
-    },
-    {
-      "3500": "2025-09-26",
-      "number": "birthDate"
-    },
-    {
-      "3500": "0-0",
-      "number": "svsRecord"
-    },
-    {
-      "3500": "",
-      "number": "leadingStateWins"
-    },
-    {
-      "3500": "NAP4",
-      "number": "napLevel"
-    },
-    {
-      "3500": "-",
-      "number": "ranking"
+      "date": "2026-08-16",
+      "time": "12:00",
+      "title": "Grand Opening",
+      "message": "State 3500 is now open."
     }
   ]
 };
