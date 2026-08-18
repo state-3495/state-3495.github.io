@@ -98,10 +98,14 @@
   .leading-badge.show{display:inline-block}
   @keyframes pulse-open{ 0%,100%{box-shadow:0 0 0 rgba(56,226,160,0.0)} 50%{box-shadow:0 0 14px rgba(56,226,160,0.5)} }
 
-  .transfer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
-  .transfer-box{background:rgba(255,255,255,0.03);border-radius:12px;padding:12px 8px;text-align:center}
+  .transfer-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .transfer-group{font-size:14px;font-weight:800;color:var(--cyan)}
+  .transfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .transfer-box{background:rgba(255,255,255,0.03);border-radius:12px;padding:14px;text-align:center}
+  .transfer-box.wide{grid-column:1 / -1}
   .transfer-box-label{font-size:10px;letter-spacing:0.08em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:6px}
   .transfer-box-value{font-size:15px;font-weight:800;color:var(--ink);word-break:break-word}
+  .transfer-box.wide .transfer-box-value{font-size:20px}
 
   table{width:100%;border-collapse:collapse;font-size:13px}
   th{text-align:left;color:var(--ink-dim);font-weight:700;font-size:11px;letter-spacing:0.06em;
@@ -143,7 +147,12 @@
   .alliance-card:last-child{margin-bottom:0}
   .alliance-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
   .alliance-name{font-size:17px;font-weight:800;color:var(--cyan)}
-  .alliance-power{margin-left:auto;font-size:13px;color:var(--ink-dim);font-weight:700}
+  .alliance-power{
+    margin-left:auto;display:inline-flex;align-items:center;justify-content:center;
+    min-width:56px;height:32px;padding:0 14px;flex-shrink:0;border-radius:999px;
+    background:rgba(56,226,160,0.15);border:2px solid rgba(56,226,160,0.4);
+    color:var(--green);font-weight:800;font-size:13px;text-align:center;
+  }
   .alliance-desc{
     font-size:14px;line-height:1.6;color:var(--ink);font-weight:500;
     margin:10px 0 14px;white-space:pre-line;
@@ -171,7 +180,7 @@
   .event-card{border:1px solid var(--card-border);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02)}
   .event-name{font-size:11px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
   .event-times{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
-  .event-time-box{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 6px;text-align:center}
+  .event-time-box{background:rgba(255,255,255,0.03);border-radius:10px;padding:6px;text-align:center}
   .event-time-label{font-size:10px;letter-spacing:0.08em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:4px}
   .event-time-value{font-family:ui-monospace,"JetBrains Mono",Menlo,monospace;font-size:17px;font-weight:800;color:var(--cyan)}
 
@@ -260,8 +269,13 @@
   </section>
 
   <section class="card">
-    <h2>Transfer</h2>
-    <span class="transfer-status" id="transferStatus"></span><span class="leading-badge" id="leadingBadge">LEADING</span>
+    <div class="transfer-top">
+      <h2 style="margin-bottom:0">Transfer</h2>
+      <span class="transfer-group" id="transferGroup"></span>
+    </div>
+    <div>
+      <span class="transfer-status" id="transferStatus"></span><span class="leading-badge" id="leadingBadge">LEADING</span>
+    </div>
     <div class="transfer-grid" id="transferGrid"></div>
   </section>
 
@@ -438,17 +452,17 @@ window.addEventListener('DOMContentLoaded', () => {
   statusEl.className = `transfer-status ${transfer.isOpen ? 'open' : 'closed'}`;
   document.getElementById('leadingBadge').classList.toggle('show', transfer.leadingState === true);
 
+  document.getElementById('transferGroup').textContent = transfer.groupNumber ? `Group #${transfer.groupNumber}` : '';
+
+  const eligible = ['Eligible States', `${transfer.eligibleStatesStart} ~ ${transfer.eligibleStatesEnd}`];
   const fields = [
-    ['Group', transfer.groupNumber],
-    ['Eligible', `${transfer.eligibleStatesStart} ~ ${transfer.eligibleStatesEnd}`],
     ['Period', `${transfer.periodStart} ~ ${transfer.periodEnd}`],
-    ['Spots', `${transfer.spotsLeft} / ${transfer.spotsTotal}`],
+    ['Spots Left', `${transfer.spotsLeft} / ${transfer.spotsTotal}`],
     ['Power Cap', transfer.powerCap],
     ['Special Tickets', transfer.specialTickets || '-'],
   ];
-  document.getElementById('transferGrid').innerHTML = fields
-    .map(([k, v]) => `<div class="transfer-box"><div class="transfer-box-label">${k}</div><div class="transfer-box-value">${v}</div></div>`)
-    .join('');
+  const box = ([k, v], wide) => `<div class="transfer-box${wide ? ' wide' : ''}"><div class="transfer-box-label">${k}</div><div class="transfer-box-value">${v}</div></div>`;
+  document.getElementById('transferGrid').innerHTML = box(eligible, true) + fields.map((f) => box(f, false)).join('');
 
   document.getElementById('alliances').innerHTML = renderAlliances(alliances, council, events);
 
