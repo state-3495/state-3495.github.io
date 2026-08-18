@@ -101,29 +101,14 @@ const CONFIG = {
   ],
   "timeline": [
     {
-      "day": "0",
-      "title": "State Opens",
-      "description": "Server launch day."
+      "day 0 14 53": "360",
+      "title State Opens Tundra Unlocked Sunfire Castle": "Gen 6",
+      "description Server launch day. Tundra region opens up. Sunfire Castle event begins (Saturdays).": "Gen6 Heros Open"
     },
     {
-      "day": "14",
-      "title": "Tundra Unlocked",
-      "description": "Tundra region opens up."
-    },
-    {
-      "day": "53",
-      "title": "Sunfire Castle",
-      "description": "Sunfire Castle event begins (Saturdays)."
-    },
-    {
-      "day": "80",
-      "title": "SVS & KOI",
-      "description": "State vs State and King of Icefield events begin."
-    },
-    {
-      "day": "500",
-      "title": "Fire Crystal 9-10",
-      "description": "Fire Crystal levels 9-10 unlock."
+      "day 0 14 53": "",
+      "title State Opens Tundra Unlocked Sunfire Castle": "Fire Crystal 9-10",
+      "description Server launch day. Tundra region opens up. Sunfire Castle event begins (Saturdays).": "Fire Crystal levels 9-10 unlock."
     }
   ],
   "updates": [
