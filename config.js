@@ -1,6 +1,7 @@
 // Auto-generated from Google Sheet. Do not edit by hand.
 const CONFIG = {
   "info": {
+    "number": "3500",
     "tagline": "VERIFIED WINNER STATE",
     "birthDate": "2025-09-26",
     "svsRecord": "0-0",
@@ -9,6 +10,7 @@ const CONFIG = {
     "ranking": "-"
   },
   "transfer": {
+    "isOpen": true,
     "groupNumber": "14",
     "eligibleStatesStart": "-",
     "eligibleStatesEnd": "-",
