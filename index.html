@@ -277,7 +277,7 @@ function renderAlliances(alliances, council, events) {
   }).join('');
 }
 
-function renderGovernance(gov, rules, council) {
+function renderGovernance(gov, rules) {
   gov = gov || {};
   const overview = `
     <div class="gov-row">
@@ -301,9 +301,7 @@ function renderGovernance(gov, rules, council) {
   return `
     ${overview}
     <div class="gov-subhead">Rules</div>
-    ${list(rules, 'rule')}
-    <div class="gov-subhead">Council</div>
-    ${renderTable(council)}`;
+    ${list(rules, 'rule')}`;
 }
 
 function stateAgeInDays(birthDate) {
@@ -321,7 +319,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('napLevel').textContent = info.napLevel;
   document.getElementById('leadingStateWins').textContent = info.leadingStateWins;
 
-  document.getElementById('governance').innerHTML = renderGovernance(governance, rules, council);
+  document.getElementById('governance').innerHTML = renderGovernance(governance, rules);
 
   const statusEl = document.getElementById('transferStatus');
   statusEl.textContent = transfer.isOpen ? 'OPEN' : 'CLOSED';
