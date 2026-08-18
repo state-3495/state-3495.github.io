@@ -20,6 +20,9 @@ const CONFIG = {
     "powerCap": "187M"
   },
   "governance": {
+    "peaceLevelLabel": "Peace Level",
+    "peaceLevelStatus": "Stable",
+    "peaceLevelDescription": "No active wars in state.",
     "peaceLevelPercentage": "90",
     "napCoverageValue": "3/3 top alliances",
     "napCoverageDescription": " All top alliances have signed NAP.",
@@ -77,33 +80,48 @@ const CONFIG = {
   "events": [
     {
       "alliance": "ICE",
-      "event": "Bear Trap",
+      "name": "Bear Trap",
       "time 1": "14:00",
       "time 2": "2:00"
     },
     {
       "alliance": "ICE",
-      "event": "Crazy Joe",
+      "name": "Crazy Joe",
       "time 1": "20:00",
       "time 2": "1:00"
     },
     {
       "alliance": "ICE",
-      "event": "Foundry Canyon",
+      "name": "Foundry Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
     }
   ],
   "timeline": [
     {
-      "day 0 14 53": "360",
-      "title State Opens Tundra Unlocked Sunfire Castle": "Gen 6",
-      "description Server launch day. Tundra region opens up. Sunfire Castle event begins (Saturdays).": "Gen6 Heros Open"
+      "day": "0",
+      "title": "State Opens",
+      "description": "Server launch day."
     },
     {
-      "day 0 14 53": "",
-      "title State Opens Tundra Unlocked Sunfire Castle": "Fire Crystal 9-10",
-      "description Server launch day. Tundra region opens up. Sunfire Castle event begins (Saturdays).": "Fire Crystal levels 9-10 unlock."
+      "day": "14",
+      "title": "Tundra Unlocked",
+      "description": "Tundra region opens up."
+    },
+    {
+      "day": "53",
+      "title": "Sunfire Castle",
+      "description": "Sunfire Castle event begins (Saturdays)."
+    },
+    {
+      "day": "360",
+      "title": "Gen 6",
+      "description": "Gen6 Heros Open"
+    },
+    {
+      "day": "500",
+      "title": "Fire Crystal 9-10",
+      "description": "Fire Crystal levels 9-10 unlock."
     }
   ],
   "updates": [
