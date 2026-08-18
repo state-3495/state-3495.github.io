@@ -4,47 +4,189 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>State 3500 | Whiteout Survival</title>
-<script src="config.js?v=58b76664" defer></script>
+<script src="config.js?v=4dd47d58" defer></script>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
-  body{background:linear-gradient(to bottom,#f8fafc,#f0f9ff,#f1f5f9);color:#0f172a;padding:24px 16px 60px}
+  :root{
+    --bg-0:#060b18; --bg-1:#0b1530; --bg-2:#0f1f45;
+    --ink:#eaf2ff; --ink-dim:#93a4c8;
+    --gold:#ffd76a; --gold-dim:#a9812f;
+    --cyan:#4fd8ff; --cyan-dim:#1c6d8a;
+    --green:#38e2a0; --red:#ff5d7a;
+    --card:rgba(255,255,255,0.04);
+    --card-border:rgba(255,255,255,0.09);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  body{
+    background:
+      radial-gradient(1100px 500px at 50% -10%, rgba(79,216,255,0.16), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(255,215,106,0.10), transparent 55%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-2));
+    color:var(--ink);
+    padding:32px 16px 60px;
+    min-height:100vh;
+  }
   .wrap{max-width:640px;margin:0 auto}
-  header{text-align:center;margin-bottom:24px}
-  header h1{font-size:32px;font-weight:900}
-  header p{color:#0284c7;font-weight:600;margin-top:4px}
-  .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 20px -4px rgba(0,0,0,0.05)}
-  .card h2{font-size:14px;letter-spacing:0.05em;color:#64748b;text-transform:uppercase;margin-bottom:12px}
+
+  header{text-align:center;margin-bottom:28px;position:relative}
+  .crown{font-size:11px;letter-spacing:0.2em;color:var(--gold);font-weight:700;
+    text-shadow:0 0 12px rgba(255,215,106,0.6); margin-bottom:6px}
+  header h1{
+    font-size:40px;font-weight:900;letter-spacing:0.01em;
+    background:linear-gradient(135deg,#fff 10%,var(--cyan) 55%,var(--gold) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 2px 18px rgba(79,216,255,0.25));
+  }
+  header p{
+    display:inline-block; margin-top:10px; padding:5px 14px; border-radius:999px;
+    font-size:12px; font-weight:700; letter-spacing:0.08em;
+    color:var(--gold); background:rgba(255,215,106,0.08);
+    border:1px solid rgba(255,215,106,0.35);
+    animation:glow 2.6s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{ box-shadow:0 0 6px rgba(255,215,106,0.15); }
+    50%{ box-shadow:0 0 18px rgba(255,215,106,0.45); }
+  }
+
+  .card{
+    background:var(--card); backdrop-filter:blur(6px);
+    border:1px solid var(--card-border); border-radius:18px;
+    padding:20px; margin-bottom:16px;
+    box-shadow:0 10px 30px -12px rgba(0,0,0,0.5);
+    opacity:0; transform:translateY(10px);
+    animation:rise 0.5s ease forwards;
+  }
+  .card:nth-of-type(1){animation-delay:0.02s}
+  .card:nth-of-type(2){animation-delay:0.08s}
+  .card:nth-of-type(3){animation-delay:0.14s}
+  .card:nth-of-type(4){animation-delay:0.20s}
+  .card:nth-of-type(5){animation-delay:0.26s}
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .card h2{
+    font-size:12px; letter-spacing:0.14em; font-weight:800; text-transform:uppercase;
+    color:var(--ink-dim); margin-bottom:14px; display:flex; align-items:center; gap:8px;
+  }
+  .card h2::before{
+    content:""; width:8px; height:8px; border-radius:2px;
+    background:linear-gradient(135deg,var(--cyan),var(--gold));
+    box-shadow:0 0 8px rgba(79,216,255,0.7);
+  }
+
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center}
-  .stats div span{display:block}
-  .stats .val{font-size:20px;font-weight:700}
-  .stats .label{font-size:12px;color:#64748b;margin-top:2px}
-  .transfer-status{display:inline-block;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:12px}
-  .open{background:#dcfce7;color:#166534}
-  .closed{background:#fee2e2;color:#991b1b}
-  .transfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px}
-  .transfer-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed #e2e8f0;padding:6px 0}
-  .transfer-grid b{color:#64748b;font-weight:500}
-  .update{padding:10px 0;border-bottom:1px solid #f1f5f9}
-  .update:last-child{border-bottom:none}
-  .update .meta{font-size:12px;color:#94a3b8}
-  .update .title{font-weight:700;margin:2px 0}
+  .stats div{padding:10px 4px; border-radius:12px; background:rgba(255,255,255,0.03)}
+  .stats span{display:block}
+  .stats .val{
+    font-size:22px;font-weight:800;
+    background:linear-gradient(135deg,#fff,var(--cyan));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .stats .label{font-size:11px;color:var(--ink-dim);margin-top:4px;letter-spacing:0.05em;text-transform:uppercase}
+
+  .transfer-status{
+    display:inline-block;padding:5px 14px;border-radius:999px;
+    font-size:12px;font-weight:800;letter-spacing:0.08em;margin-bottom:14px;
+  }
+  .open{background:rgba(56,226,160,0.12);color:var(--green);border:1px solid rgba(56,226,160,0.4);
+    animation:pulse-open 1.8s ease-in-out infinite}
+  .closed{background:rgba(255,93,122,0.12);color:var(--red);border:1px solid rgba(255,93,122,0.4)}
+  @keyframes pulse-open{ 0%,100%{box-shadow:0 0 0 rgba(56,226,160,0.0)} 50%{box-shadow:0 0 14px rgba(56,226,160,0.5)} }
+
+  .transfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+  .transfer-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--card-border);padding:7px 0}
+  .transfer-grid b{color:var(--ink-dim);font-weight:500}
+
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;color:#64748b;font-weight:600;padding:4px 8px;border-bottom:1px solid #e2e8f0}
-  td{padding:6px 8px;border-bottom:1px solid #f1f5f9}
-  .alliance-group{margin-bottom:16px}
-  .alliance-group:last-child{margin-bottom:0}
-  .alliance-group h3{font-size:14px;margin-bottom:6px}
-  .empty{color:#94a3b8;font-size:13px}
-  .timeline-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9}
-  .timeline-item:last-child{border-bottom:none}
-  .timeline-day{flex:0 0 56px;font-weight:700;color:#0284c7;font-size:13px}
-  .timeline-title{font-weight:700;font-size:14px}
-  .timeline-desc{font-size:13px;color:#475569}
+  th{text-align:left;color:var(--ink-dim);font-weight:700;font-size:11px;letter-spacing:0.06em;
+    text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--card-border)}
+  td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.05)}
+  tbody tr{transition:background 0.15s}
+  tbody tr:hover{background:rgba(79,216,255,0.06)}
+  tbody tr:last-child td{border-bottom:none}
+  .rank-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:26px;height:26px;padding:0 6px;border-radius:8px;font-weight:800;font-size:13px;
+    background:rgba(255,255,255,0.06);color:var(--ink-dim);
+  }
+  .rank-badge.r1{color:#1a1500;background:linear-gradient(135deg,var(--gold),#fff3cf);box-shadow:0 0 10px rgba(255,215,106,0.5)}
+  .rank-badge.r2{color:#1a1d24;background:linear-gradient(135deg,#dfe6f0,#fff)}
+  .rank-badge.r3{color:#2a160a;background:linear-gradient(135deg,#e0a76a,#f3d3ab)}
+
+  .empty{color:var(--ink-dim);font-size:13px;font-style:italic}
+
+  .gov-row{padding:10px 0;border-bottom:1px solid var(--card-border)}
+  .gov-row:last-child{border-bottom:none}
+  .gov-row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .gov-row-head b{font-size:14px;font-weight:700}
+  .gov-status{font-size:12px;font-weight:800;color:var(--green)}
+  .gov-desc{font-size:12.5px;color:var(--ink-dim);margin-bottom:6px}
+  .meter{height:8px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden}
+  .meter-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--green))}
+  .gov-list{list-style:none;font-size:13px;color:var(--ink-dim)}
+  .gov-list li{padding:6px 0 6px 18px;position:relative;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .gov-list li:last-child{border-bottom:none}
+  .gov-list li::before{content:"›";position:absolute;left:0;color:var(--cyan);font-weight:800}
+  .gov-subhead{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-dim);margin:14px 0 6px}
+  .gov-subhead:first-child{margin-top:0}
+
+  .alliance-card{
+    border:1px solid var(--card-border); border-radius:14px; padding:16px;
+    margin-bottom:14px; background:rgba(255,255,255,0.02);
+  }
+  .alliance-card:last-child{margin-bottom:0}
+  .alliance-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .alliance-name{font-size:17px;font-weight:800;color:var(--cyan)}
+  .alliance-power{margin-left:auto;font-size:13px;color:var(--ink-dim);font-weight:700}
+  .alliance-desc{font-size:13px;color:var(--ink-dim);margin-bottom:10px}
+  .recruiting{
+    font-size:12.5px; padding:8px 12px; margin-bottom:12px; border-radius:10px;
+    background:rgba(255,215,106,0.07); border-left:3px solid var(--gold); color:var(--ink);
+  }
+  .recruiting b{color:var(--gold)}
+  .alliance-sub h4{
+    font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-dim);
+    margin:12px 0 6px;
+  }
+  .alliance-sub:first-of-type h4{margin-top:0}
+  .note{color:var(--ink-dim);font-style:italic}
+
+  .timeline{position:relative;padding-left:18px}
+  .timeline::before{
+    content:"";position:absolute;left:4px;top:4px;bottom:4px;width:2px;
+    background:linear-gradient(180deg,var(--cyan),var(--card-border));
+  }
+  .timeline-item{position:relative;padding:0 0 18px 20px}
+  .timeline-item:last-child{padding-bottom:0}
+  .timeline-item::before{
+    content:"";position:absolute;left:-19px;top:2px;width:10px;height:10px;border-radius:50%;
+    background:var(--bg-1);border:2px solid var(--card-border);
+  }
+  .timeline-item.reached::before{border-color:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  .timeline-item.current::before{border-color:var(--gold);box-shadow:0 0 10px var(--gold);background:var(--gold)}
+  .timeline-day{font-size:11px;font-weight:800;color:var(--ink-dim);letter-spacing:0.06em;text-transform:uppercase}
+  .timeline-item.reached .timeline-day{color:var(--cyan)}
+  .timeline-item.current .timeline-day{color:var(--gold)}
+  .timeline-title{font-weight:700;font-size:14px;margin:2px 0}
+  .timeline-desc{font-size:13px;color:var(--ink-dim)}
+
+  .update{padding:12px 0;border-bottom:1px solid var(--card-border)}
+  .update:last-child{border-bottom:none}
+  .update .meta{font-size:11px;color:var(--ink-dim);letter-spacing:0.04em}
+  .update .title{font-weight:700;margin:3px 0;color:var(--cyan)}
+
+  .live-dot{
+    display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:var(--red);margin-right:6px;
+    box-shadow:0 0 8px var(--red);
+    animation:live 1.4s ease-in-out infinite;
+  }
+  @keyframes live{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
   <header>
+    <div class="crown">WHITEOUT SURVIVAL</div>
     <h1 id="stateTitle">State</h1>
     <p id="stateTagline"></p>
   </header>
@@ -54,8 +196,13 @@
     <div class="stats">
       <div><span class="val" id="svsRecord"></span><span class="label">SVS Record</span></div>
       <div><span class="val" id="napLevel"></span><span class="label">Nap Level</span></div>
-      <div><span class="val" id="ranking"></span><span class="label">Ranking</span></div>
+      <div><span class="val" id="leadingStateWins"></span><span class="label">Leading State</span></div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>Governance</h2>
+    <div id="governance"></div>
   </section>
 
   <section class="card">
@@ -70,22 +217,12 @@
   </section>
 
   <section class="card">
-    <h2>Players</h2>
-    <div id="players"></div>
-  </section>
-
-  <section class="card">
-    <h2>Events</h2>
-    <div id="events"></div>
-  </section>
-
-  <section class="card">
     <h2>State Timeline</h2>
-    <div id="timeline"></div>
+    <div class="timeline" id="timeline"></div>
   </section>
 
   <section class="card">
-    <h2>Live Updates</h2>
+    <h2><span class="live-dot"></span>Live Updates</h2>
     <div id="updates"></div>
   </section>
 </div>
@@ -96,30 +233,91 @@ function renderTable(rows, excludeKeys) {
   if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
   const headers = Object.keys(rows[0]).filter((h) => !excludeKeys.includes(h));
   const thead = headers.map((h) => `<th>${h}</th>`).join('');
-  const tbody = rows.map((r) => `<tr>${headers.map((h) => `<td>${r[h]}</td>`).join('')}</tr>`).join('');
+  const tbody = rows.map((r) => `<tr>${headers.map((h) => {
+    const cls = h === 'note' ? ' class="note"' : '';
+    return `<td${cls}>${r[h]}</td>`;
+  }).join('')}</tr>`).join('');
   return `<table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
 }
 
-function renderGroupedByAlliance(rows) {
-  if (!rows || !rows.length) return '<p class="empty">No data yet.</p>';
-  const groups = {};
-  for (const r of rows) {
-    const key = r.alliance || 'Unassigned';
-    (groups[key] = groups[key] || []).push(r);
-  }
-  return Object.entries(groups)
-    .map(([alliance, group]) => `<div class="alliance-group"><h3>${alliance}</h3>${renderTable(group, ['alliance'])}</div>`)
-    .join('');
+function rankBadge(ranking) {
+  const n = String(ranking);
+  const cls = ['1', '2', '3'].includes(n) ? ` r${n}` : '';
+  return `<span class="rank-badge${cls}">#${ranking}</span>`;
+}
+
+function renderAlliances(alliances, players, events) {
+  if (!alliances || !alliances.length) return '<p class="empty">No data yet.</p>';
+  return alliances.map((a) => {
+    const own = (rows) => (rows || []).filter((r) => r.alliance === a.name).map(({ alliance, ...rest }) => rest);
+    const alliancePlayers = own(players);
+    const allianceEvents = own(events);
+    return `
+      <div class="alliance-card">
+        <div class="alliance-head">
+          ${rankBadge(a.ranking)}
+          <span class="alliance-name">${a.name}</span>
+          <span class="alliance-power">${a.power}</span>
+        </div>
+        <div class="alliance-desc">${a.description || ''}</div>
+        ${a.recruiting ? `<div class="recruiting"><b>Recruiting:</b> ${a.recruiting}</div>` : ''}
+        <div class="alliance-sub">
+          <h4>Players</h4>
+          ${renderTable(alliancePlayers)}
+        </div>
+        <div class="alliance-sub">
+          <h4>Events</h4>
+          ${renderTable(allianceEvents)}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderGovernance(gov, rules, council) {
+  gov = gov || {};
+  const overview = `
+    <div class="gov-row">
+      <div class="gov-row-head"><b>${gov.peaceLevelLabel || 'Peace Level'}</b><span class="gov-status">${gov.peaceLevelStatus || ''}</span></div>
+      <div class="gov-desc">${gov.peaceLevelDescription || ''}</div>
+      <div class="meter"><div class="meter-fill" style="width:${gov.peaceLevelPercentage || 0}%"></div></div>
+    </div>
+    <div class="gov-row">
+      <div class="gov-row-head"><b>${gov.napCoverageValue || ''}</b><span class="gov-status">NAP Coverage</span></div>
+      <div class="gov-desc">${gov.napCoverageDescription || ''}</div>
+    </div>
+    <div class="gov-row">
+      <div class="gov-row-head"><b>${gov.kePolicyValue || ''}</b><span class="gov-status">KE Policy</span></div>
+      <div class="gov-desc">${gov.kePolicyDescription || ''}</div>
+    </div>`;
+
+  const list = (rows, key) => (rows && rows.length)
+    ? `<ul class="gov-list">${rows.map((r) => `<li>${r[key]}</li>`).join('')}</ul>`
+    : '<p class="empty">No data yet.</p>';
+
+  return `
+    ${overview}
+    <div class="gov-subhead">Rules</div>
+    ${list(rules, 'rule')}
+    <div class="gov-subhead">Council</div>
+    ${list(council, 'member')}`;
+}
+
+function stateAgeInDays(birthDate) {
+  const start = new Date(birthDate);
+  if (Number.isNaN(start.getTime())) return null;
+  return Math.floor((Date.now() - start.getTime()) / 86400000);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const { info, transfer, alliances, players, events, timeline, updates } = CONFIG;
+  const { info, transfer, governance, alliances, players, events, timeline, updates } = CONFIG;
 
   document.getElementById('stateTitle').textContent = `State ${info.number}`;
   document.getElementById('stateTagline').textContent = info.tagline;
   document.getElementById('svsRecord').textContent = info.svsRecord;
   document.getElementById('napLevel').textContent = info.napLevel;
-  document.getElementById('ranking').textContent = info.ranking;
+  document.getElementById('leadingStateWins').textContent = info.leadingStateWins;
+
+  document.getElementById('governance').innerHTML = renderTable(governance);
 
   const statusEl = document.getElementById('transferStatus');
   statusEl.textContent = transfer.isOpen ? 'OPEN' : 'CLOSED';
@@ -136,13 +334,19 @@ window.addEventListener('DOMContentLoaded', () => {
     .map(([k, v]) => `<div><b>${k}</b><span>${v}</span></div>`)
     .join('');
 
-  document.getElementById('alliances').innerHTML = renderTable(alliances);
-  document.getElementById('players').innerHTML = renderGroupedByAlliance(players);
-  document.getElementById('events').innerHTML = renderGroupedByAlliance(events);
+  document.getElementById('alliances').innerHTML = renderAlliances(alliances, players, events);
 
-  document.getElementById('timeline').innerHTML = (timeline || [])
-    .map((t) => `<div class="timeline-item"><div class="timeline-day">Day ${t.day}</div><div><div class="timeline-title">${t.title}</div><div class="timeline-desc">${t.description}</div></div></div>`)
-    .join('') || '<p class="empty">No data yet.</p>';
+  const age = stateAgeInDays(info.birthDate);
+  const rows = timeline || [];
+  const reachedIdx = age === null ? -1
+    : rows.reduce((best, t, i) => (Number(t.day) <= age ? i : best), -1);
+
+  document.getElementById('timeline').innerHTML = rows.length
+    ? rows.map((t, i) => {
+        const cls = i === reachedIdx ? 'timeline-item current' : i < reachedIdx ? 'timeline-item reached' : 'timeline-item';
+        return `<div class="${cls}"><div class="timeline-day">Day ${t.day}</div><div class="timeline-title">${t.title}</div><div class="timeline-desc">${t.description}</div></div>`;
+      }).join('')
+    : '<p class="empty">No data yet.</p>';
 
   document.getElementById('updates').innerHTML = updates
     .map(u => `<div class="update"><div class="meta">${u.date} ${u.time}</div><div class="title">${u.title}</div><div>${u.message}</div></div>`)

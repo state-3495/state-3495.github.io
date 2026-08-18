@@ -1,8 +1,8 @@
 // Pulls data from the public Google Sheet and regenerates config.js.
 // Sheet must be shared as "Anyone with the link: Viewer".
 const SHEET_ID = "1_oV6szOFVhX_lr0lPEOABZbvlUExW2_I1pTz4tnyFxk";
-const KV_TABS = ["info", "transfer"];
-const LIST_TABS = ["alliances", "players", "events", "timeline", "updates"];
+const KV_TABS = ["info", "transfer", "governance"];
+const LIST_TABS = ["rules", "council", "alliances", "players", "events", "timeline", "updates"];
 
 export function parseCsv(text) {
   const rows = [];
@@ -45,26 +45,39 @@ export function toList(rows) {
   return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
 }
 
-async function fetchTab(name) {
+// Google's gviz CSV endpoint has a footgun: if `sheet=<name>` doesn't match
+// any tab, it silently returns the FIRST tab's data instead of erroring.
+// We fetch the sentinel tab's raw text once and treat any other tab whose
+// raw text matches it byte-for-byte as "not found" (Google fell back to it).
+const SENTINEL_TAB = "info";
+
+async function fetchRawCsv(name) {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch tab "${name}": ${res.status}`);
   const text = await res.text();
   if (text.trimStart().startsWith("<")) {
-    throw new Error(`Tab "${name}" returned HTML, not CSV. Make sure the sheet is shared as "Anyone with the link: Viewer" and a tab named "${name}" exists.`);
+    throw new Error(`Tab "${name}" returned HTML, not CSV. Make sure the sheet is shared as "Anyone with the link: Viewer".`);
   }
-  return parseCsv(text);
+  return text;
 }
 
 async function main() {
-  const [kvRows, listRows] = await Promise.all([
-    Promise.all(KV_TABS.map(fetchTab)),
-    Promise.all(LIST_TABS.map(fetchTab)),
-  ]);
+  const sentinelText = await fetchRawCsv(SENTINEL_TAB);
+  const otherNames = [...KV_TABS, ...LIST_TABS].filter((name) => name !== SENTINEL_TAB);
+
+  const rawByName = { [SENTINEL_TAB]: sentinelText };
+  await Promise.all(otherNames.map(async (name) => {
+    const text = await fetchRawCsv(name);
+    if (text === sentinelText) {
+      throw new Error(`Tab "${name}" not found in the sheet (Google silently returned the "${SENTINEL_TAB}" tab instead). Add a tab named "${name}".`);
+    }
+    rawByName[name] = text;
+  }));
 
   const config = {};
-  KV_TABS.forEach((name, i) => { config[name] = toKeyValue(kvRows[i]); });
-  LIST_TABS.forEach((name, i) => { config[name] = toList(listRows[i]); });
+  KV_TABS.forEach((name) => { config[name] = toKeyValue(parseCsv(rawByName[name])); });
+  LIST_TABS.forEach((name) => { config[name] = toList(parseCsv(rawByName[name])); });
 
   const fs = await import("node:fs/promises");
   const path = await import("node:path");

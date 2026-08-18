@@ -24,7 +24,7 @@ sensitive in this sheet: it's effectively public.
 
 ## 2. Sheet structure
 
-The sheet needs exactly 7 tabs.
+The sheet needs exactly 9 tabs.
 
 **Tab `info`** (2 columns: `field`, `value`)
 
@@ -52,25 +52,51 @@ The sheet needs exactly 7 tabs.
 | spotsTotal | - |
 | powerCap | - |
 
+**Tab `governance`** (2 columns: `field`, `value`)
+
+| field | value |
+|---|---|
+| peaceLevelLabel | Peace Level |
+| peaceLevelStatus | Stable |
+| peaceLevelDescription | No active wars in state. |
+| peaceLevelPercentage | 90 |
+| napCoverageValue | 8/8 top alliances |
+| napCoverageDescription | All top alliances have signed NAP. |
+| kePolicyValue | Warn once, then kick |
+| kePolicyDescription | KE offenders get one warning. |
+
+**Tab `rules`** (1 column: `rule`, one row per rule)
+
+| rule |
+|---|
+| No KE without a declared war. |
+
+**Tab `council`** (1 column: `member`, one row per council member)
+
+| member |
+|---|
+| PlayerOne - President, ICE |
+
 **Tab `alliances`** (one row per alliance)
 
-| name | ranking | power | description |
-|---|---|---|---|
-| ICE | 1 | 50M | Main alliance, NAP6 verified |
+| name | ranking | power | description | recruiting |
+|---|---|---|---|---|
+| ICE | 1 | 50M | Main alliance, NAP6 verified | Active 500K+ power players |
 
 **Tab `players`** (one row per player, grouped by alliance on the site)
 
-| alliance | name | role | power |
-|---|---|---|---|
-| ICE | PlayerOne | President | 1.2B |
+| alliance | name | role | power | note |
+|---|---|---|---|---|
+| ICE | PlayerOne | President | 1.2B | Been here since day 1 |
 
-**Tab `events`** (recurring daily events, grouped by alliance on the site)
+**Tab `events`** (recurring daily events, grouped by alliance on the site;
+`time1`/`time2` are two daily run times)
 
-| alliance | event | time | duration |
+| alliance | event | time1 | time2 |
 |---|---|---|---|
-| ICE | Bear Trap | 14:00 | 2:00 |
-| ICE | Crazy Joe | 20:00 | 1:00 |
-| ICE | Foundry Canyon | 10:00 | 3:00 |
+| ICE | Bear Trap | 14:00 | 20:00 |
+| ICE | Crazy Joe | 20:00 | - |
+| ICE | Foundry Canyon | 10:00 | 22:00 |
 
 **Tab `timeline`** (state-age milestones, not alliance-specific; see
 [whiteoutsurvival.pl/state-timeline](https://whiteoutsurvival.pl/state-timeline/)
@@ -88,9 +114,9 @@ for reference values)
 | 2026-08-16 | 12:00 | Grand Opening | State 3500 is now open. |
 
 `TRUE`/`FALSE` values in `info`/`transfer` are parsed as booleans; everything
-else stays a string. Adding a row to any table tab adds a line on the site;
-adding a column adds one automatically to `alliances`/`players`/`events`
-(they render as generic tables) without any code change.
+else stays a string. Adding a row to `alliances`/`players`/`events`/`rules`/
+`council`/`updates` adds a line on the site; adding a column to
+`alliances`/`players`/`events` renders automatically without any code change.
 
 ## 3. Running the sync
 
@@ -112,4 +138,6 @@ python3 -m http.server 8000   # serve index.html + config.js locally
 
 ## 5. GitHub Pages
 
-Settings > Pages > Source: "Deploy from a branch", Branch: `main` / `(root)`.
+This repo is named `state-3500.github.io`, so GitHub Pages serves it
+automatically at https://state-3500.github.io/ with no Settings > Pages
+configuration needed.
