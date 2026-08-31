@@ -657,6 +657,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const { info, transfer, governance, rules, council, alliances, events, svs, timeline, updates } = CONFIG;
 
   document.getElementById('stateTitle').textContent = `State ${info.number}`;
+  document.title = `State ${info.number} | Whiteout Survival`;
   document.getElementById('stateTagline').textContent = info.tagline;
   document.getElementById('svsRecord').textContent = info.svsRecord;
   document.getElementById('napLevel').textContent = info.napLevel;
