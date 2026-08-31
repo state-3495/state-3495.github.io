@@ -1,6 +1,6 @@
-# State 3500 Site
+# State 3495 Site
 
-A static site for the Whiteout Survival "State 3500" page, content-managed
+A static site for the Whiteout Survival "State 3495" page, content-managed
 through a Google Sheet. GitHub Pages hosts the static files; a GitHub Actions
 workflow pulls the sheet on a schedule and regenerates `config.js`.
 
@@ -47,7 +47,7 @@ The sheet needs exactly 8 tabs.
 
 | field | value |
 |---|---|
-| number | 3500 |
+| number | 3495 |
 | tagline | VERIFIED WINNER STATE |
 | birthDate | 2026-08-16 |
 | svsRecord | 0-0 |
@@ -140,7 +140,7 @@ for reference values)
 
 | date | time | title | message |
 |---|---|---|---|
-| 2026-08-16 | 12:00 | Grand Opening | State 3500 is now open. |
+| 2026-08-16 | 12:00 | Grand Opening | State 3495 is now open. |
 
 `TRUE`/`FALSE` values in `info`/`transfer` are parsed as booleans; everything
 else stays a string. Adding a row to `alliances`/`events`/`rules`/`council`/
@@ -167,6 +167,6 @@ python3 -m http.server 8000   # serve index.html + config.js locally
 
 ## 6. GitHub Pages
 
-This repo is named `state-3500.github.io`, so GitHub Pages serves it
-automatically at https://state-3500.github.io/ with no Settings > Pages
+This repo is named `state-3495.github.io`, so GitHub Pages serves it
+automatically at https://state-3495.github.io/ with no Settings > Pages
 configuration needed.
