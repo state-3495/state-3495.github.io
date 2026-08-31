@@ -49,42 +49,54 @@ const CONFIG = {
       "Role": "R5",
       "alliance": "TGF",
       "power": "300M",
-      "discord": "-"
+      "discord": "-",
+      "whatsapp": "",
+      "globe": "FALSE"
     },
     {
       "member": "Chuckey",
       "Role": "R4",
       "alliance": "TGF",
       "power": "1B",
-      "discord": "-"
+      "discord": "-",
+      "whatsapp": "",
+      "globe": "TRUE"
     },
     {
       "member": "Osman",
       "Role": "R5",
       "alliance": "WLF",
       "power": "588M",
-      "discord": "-"
+      "discord": "",
+      "whatsapp": "-",
+      "globe": "TRUE"
     },
     {
       "member": "SkyLord",
       "Role": "R4",
       "alliance": "WLF",
       "power": "450M",
-      "discord": "-"
+      "discord": "-",
+      "whatsapp": "-",
+      "globe": "FALSE"
     },
     {
       "member": "Meteor",
       "Role": "R5",
       "alliance": "ONE",
       "power": "309M",
-      "discord": "-"
+      "discord": "-",
+      "whatsapp": "",
+      "globe": "FALSE"
     },
     {
       "member": "Meteora",
       "Role": "R4",
       "alliance": "ONE",
       "power": "793M",
-      "discord": "-"
+      "discord": "-",
+      "whatsapp": "",
+      "globe": "TRUE"
     }
   ],
   "alliances": [
