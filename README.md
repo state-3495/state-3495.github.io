@@ -92,12 +92,14 @@ The sheet needs exactly 8 tabs.
 |---|
 | No KE without a declared war. |
 
-**Tab `council`** (one row per member; a `discord` column renders as a
-clickable icon that opens a copy-to-clipboard popup instead of plain text)
+**Tab `council`** (one row per member; `discord`/`whatsapp` columns render as
+clickable icons that open a copy-to-clipboard popup instead of plain text,
+each shown only when that column has a value; `globe` set to `TRUE` shows a
+glowing globe badge next to the member)
 
-| member | Role | alliance | power | discord |
-|---|---|---|---|---|
-| PlayerOne | President | ICE | 1.2B | PlayerOne#1234 |
+| member | Role | alliance | power | discord | whatsapp | globe |
+|---|---|---|---|---|---|---|
+| PlayerOne | President | ICE | 1.2B | PlayerOne#1234 | +1 555 0100 | TRUE |
 
 **Tab `alliances`** (one row per alliance; `tag` is the short in-game alliance
 tag used to match rows in `players`/`events`/`council`, `name` is the full
