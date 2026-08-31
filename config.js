@@ -1,26 +1,26 @@
 // Auto-generated from Google Sheet. Do not edit by hand.
 const CONFIG = {
   "info": {
-    "number": "3500",
+    "number": "3495",
     "tagline": "VERIFIED WINNER STATE",
-    "birthDate": "2025-09-26",
+    "birthDate": "2025-09-25",
     "svsRecord": "1-0",
-    "leadingStateWins": "4",
+    "leadingStateWins": "0",
     "napLevel": "NAP3",
     "svsNote": "Records start from the date tracking began."
   },
   "transfer": {
     "isOpen": true,
     "groupNumber": "14",
-    "eligibleStatesStart": "3385",
-    "eligibleStatesEnd": "3571",
-    "periodStart": "August 16",
-    "periodEnd": "August 22",
-    "spotsLeft": "30",
-    "spotsTotal": "30",
-    "powerCap": "187M",
-    "leadingState": true,
-    "specialTickets": "1"
+    "eligibleStatesStart": "3114",
+    "eligibleStatesEnd": "3509",
+    "periodStart": "September 13",
+    "periodEnd": "September 19",
+    "spotsLeft": "35",
+    "spotsTotal": "35",
+    "powerCap": "400M",
+    "leadingState": false,
+    "specialTickets": "2"
   },
   "governance": {
     "peaceLevelLabel": "Peace Level",
@@ -110,7 +110,7 @@ const CONFIG = {
   ],
   "alliances": [
     {
-      "tag": "CRY",
+      "tag": "WLF",
       "name": "CryBabies",
       "ranking": "1",
       "power": "22B",
@@ -192,10 +192,10 @@ const CONFIG = {
   ],
   "svs": [
     {
-      "enemy": "#3507",
-      "prep": "TRUE",
-      "battle": "TRUE",
-      "score": "6.8B"
+      "enemy": "-",
+      "prep": "-",
+      "battle": "-",
+      "score": "-"
     }
   ],
   "timeline": [
