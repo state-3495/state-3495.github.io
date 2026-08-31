@@ -45,146 +45,125 @@ const CONFIG = {
   ],
   "council": [
     {
-      "member": "PlayerOne",
-      "Role": "President",
-      "alliance": "ICE",
-      "power": "1.2B",
-      "discord": "test1"
+      "member": "Furkan",
+      "Role": "R5",
+      "alliance": "TGF",
+      "power": "300M",
+      "discord": "-"
     },
     {
-      "member": "PlayerTwo",
+      "member": "Chuckey",
       "Role": "R4",
-      "alliance": "ICE",
-      "power": "520M",
-      "discord": "test2"
+      "alliance": "TGF",
+      "power": "1B",
+      "discord": "-"
     },
     {
-      "member": "PlayerTwo",
-      "Role": "R4",
-      "alliance": "ICE",
-      "power": "520M",
-      "discord": "test3"
+      "member": "Osman",
+      "Role": "R5",
+      "alliance": "WLF",
+      "power": "588M",
+      "discord": "-"
     },
     {
-      "member": "PlayerTwo",
+      "member": "SkyLord",
       "Role": "R4",
-      "alliance": "CRY",
-      "power": "520M",
-      "discord": "test4"
+      "alliance": "WLF",
+      "power": "450M",
+      "discord": "-"
     },
     {
-      "member": "PlayerTwo",
-      "Role": "R4",
-      "alliance": "CRY",
-      "power": "520M",
-      "discord": "test5"
+      "member": "Meteor",
+      "Role": "R5",
+      "alliance": "ONE",
+      "power": "309M",
+      "discord": "-"
     },
     {
-      "member": "PlayerTwo",
+      "member": "Meteora",
       "Role": "R4",
-      "alliance": "CRY",
-      "power": "520M",
-      "discord": "test6"
-    },
-    {
-      "member": "PlayerTwo",
-      "Role": "R4",
-      "alliance": "KOR",
-      "power": "520M",
-      "discord": "test7"
-    },
-    {
-      "member": "PlayerTwo",
-      "Role": "R4",
-      "alliance": "KOR",
-      "power": "520M",
-      "discord": "test8"
-    },
-    {
-      "member": "PlayerTwo",
-      "Role": "R4",
-      "alliance": "KOR",
-      "power": "520M",
-      "discord": "test9"
+      "alliance": "ONE",
+      "power": "793M",
+      "discord": "-"
     }
   ],
   "alliances": [
     {
-      "tag": "WLF",
-      "name": "CryBabies",
+      "tag": "TGF",
+      "name": "TheGoldenFamily",
       "ranking": "1",
-      "power": "22B",
-      "description": "sample1",
+      "power": "23B",
+      "description": "Peace, cooperation, firmness and victory in all forums.\nTGF is your safe home.",
       "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "tag": "ICE",
-      "name": "IcebornSquirrel",
+      "tag": "WLF",
+      "name": "WinterWolves",
       "ranking": "2",
-      "power": "25B",
+      "power": "23B",
       "description": "A friendly, active alliance.\nWe fight together and grow together.\nJoin us for daily events and fun.",
       "recruiting": "Active 300M+ power, FC6+ players"
     },
     {
-      "tag": "KOR",
-      "name": "HappyNewYear",
+      "tag": "ONE",
+      "name": "OneDestiny",
       "ranking": "3",
-      "power": "21B",
-      "description": "sample3",
+      "power": "14B",
+      "description": "ONE is more than an alliance\nWe are one family with one goal and one destiny",
       "recruiting": "Active 300M+ power, FC6+ players"
     }
   ],
   "events": [
     {
-      "alliance": "ICE",
+      "alliance": "TGF",
       "name": "🐻Bear Trap",
       "time 1": "14:00",
       "time 2": "2:00"
     },
     {
-      "alliance": "ICE",
+      "alliance": "TGF",
       "name": "Crazy Joe",
       "time 1": "20:00",
       "time 2": "1:00"
     },
     {
-      "alliance": "ICE",
+      "alliance": "TGF",
       "name": "Foundry / Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
     },
     {
-      "alliance": "CRY",
+      "alliance": "WLF",
       "name": "🐻Bear Trap",
       "time 1": "14:00",
       "time 2": "2:00"
     },
     {
-      "alliance": "CRY",
+      "alliance": "WLF",
       "name": "Crazy Joe",
       "time 1": "20:00",
       "time 2": "1:00"
     },
     {
-      "alliance": "CRY",
+      "alliance": "WLF",
       "name": "Foundry / Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
     },
     {
-      "alliance": "KOR",
+      "alliance": "ONE",
       "name": "🐻Bear Trap",
       "time 1": "14:00",
       "time 2": "2:00"
     },
     {
-      "alliance": "KOR",
+      "alliance": "ONE",
       "name": "Crazy Joe",
       "time 1": "20:00",
       "time 2": "1:00"
     },
     {
-      "alliance": "KOR",
+      "alliance": "ONE",
       "name": "Foundry / Canyon",
       "time 1": "10:00",
       "time 2": "3:00"
@@ -232,10 +211,10 @@ const CONFIG = {
   ],
   "updates": [
     {
-      "date": "2025-09-26",
+      "date": "2025-09-25",
       "time": "12:00",
       "title": "Grand Opening",
-      "message": "State 3500 is now open."
+      "message": "State 3495 is now open."
     }
   ]
 };
